@@ -114,9 +114,9 @@
                 localStorage.removeItem('token');
                 localStorage.removeItem('user_id');
                 alert('로그아웃 되었습니다.');
-                window.location.href = 'login.html';
+                window.location.href = 'login.php';
             } else {
-                window.location.href = 'login.html';
+                window.location.href = 'login.php';
             }
         }
 
