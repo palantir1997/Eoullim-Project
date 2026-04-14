@@ -16,21 +16,22 @@
 <body>
     <div class="register-card">
         <h3 class="text-center fw-bold mb-4"><i class="fas fa-user-plus me-2"></i>회원가입</h3>
-        <form id="registerForm" action="login.html">
-            <div class="mb-3">
-                <label class="form-label small fw-bold">ID</label>
-                <input type="text" class="form-control" placeholder="사용할 아이디 입력" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label small fw-bold">Password</label>
-                <input type="password" id="pw" class="form-control" placeholder="비밀번호 입력" required>
-                <p class="password-hint">* 보안을 위해 대문자, 소문자를 포함해야 합니다.</p>
-            </div>
-            <div class="mb-4">
-                <label class="form-label small fw-bold">Confirm Password</label>
-                <input type="password" id="pw_confirm" class="form-control" placeholder="비밀번호 재입력" required>
-            </div>
-            <button type="submit" class="btn btn-register">가입하기</button>
+       <form id="registerForm" action="register.php" method="POST">
+    <div class="mb-3">
+        <label class="form-label small fw-bold">ID</label>
+        <input type="text" name="userid" class="form-control" placeholder="사용할 아이디 입력" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label small fw-bold">Password</label>
+        <input type="password" id="pw" name="password" class="form-control" placeholder="비밀번호 입력" required>
+        <p class="password-hint">* 보안을 위해 대문자, 소문자를 포함해야 합니다.</p>
+    </div>
+    <div class="mb-4">
+        <label class="form-label small fw-bold">Confirm Password</label>
+        <input type="password" id="pw_confirm" name="confirm_password" class="form-control" placeholder="비밀번호 재입력" required>
+    </div>
+    <button type="submit" class="btn btn-register">가입하기</button>
+</form>
             <div class="text-center mt-3">
                 <a href="login.html" class="small text-decoration-none">이미 계정이 있으신가요? 로그인</a>
             </div>
