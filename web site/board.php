@@ -19,7 +19,7 @@
 <body class="d-flex">
 
     <div class="sidebar d-flex flex-column flex-shrink-0" style="width: 250px;">
-        <a href="board.html" class="navbar-brand border-bottom border-secondary mb-3">
+        <a href="board.php" class="navbar-brand border-bottom border-secondary mb-3">
             <i class="fas fa-shield-alt me-2"></i>Aulim Security
         </a>
         <ul class="nav flex-column mb-auto">
