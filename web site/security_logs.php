@@ -21,20 +21,20 @@ $userId = $_SESSION['userid'];
         .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background-color: rgba(255,255,255,.1); }
         .sidebar .navbar-brand { color: #fff; font-weight: bold; padding: 1.5rem 1rem; text-align: center; display: block; text-decoration: none; }
         .content-wrapper { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-        .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); z-index: 10; }
-        
-        /* 터미널 감성 블랙 스타일 적용 */
-        .log-card { border-radius: 5px; border: none; background-color: #000; box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.1); }
-        .table { color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.9rem; margin-bottom: 0; }
-        .table-bordered { border-color: #333; }
-        .table-dark-custom { background-color: #000; }
-        .table-dark-custom thead { background-color: #222; color: #fff; border-bottom: 2px solid #444; }
-        .table-hover tbody tr:hover { background-color: rgba(255, 255, 255, 0.05); color: #fff; }
-        
-        /* 스크롤바 디자인 */
-        .table-responsive::-webkit-scrollbar { width: 8px; height: 8px; }
-        .table-responsive::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
-        .table-responsive { max-height: 600px; overflow-y: auto; }
+        .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); }
+
+        #log-display { 
+            background-color: #000; 
+            color: #00ff00; 
+            font-family: 'Consolas', monospace; 
+            padding: 20px; 
+            height: 550px; 
+            overflow-y: auto; 
+            border-radius: 5px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body class="d-flex">
@@ -67,28 +67,13 @@ $userId = $_SESSION['userid'];
         </nav>
 
         <div class="container-fluid px-4">
-            <div class="card log-card">
-                <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-user-shield me-2"></i>Fail2Ban 차단 내역 (실시간 5초 갱신)</h6>
+            <div class="card shadow-sm border-0">
+                <div class="card-header py-3 bg-dark d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 fw-bold text-white"><i class="fas fa-terminal me-2"></i>Fail2Ban Banned Logs (Live)</h6>
                     <span class="badge bg-danger">LIVE MONITORING</span>
                 </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark-custom table-hover table-bordered mb-0">
-                            <thead class="text-center">
-                                <tr>
-                                    <th>Banned IP</th>
-                                    <th>Ban Time</th>
-                                    <th>Unban Time</th>
-                                    <th>Jail Name</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="log-table-body" class="text-center align-middle">
-                                <tr><td colspan='5' class='py-5 text-muted'>데이터를 불러오는 중입니다...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div id="log-display">로그를 불러오는 중입니다...</div>
                 </div>
             </div>
         </div>
@@ -99,10 +84,13 @@ $userId = $_SESSION['userid'];
         fetch('fetch_logs.php')
             .then(response => response.text())
             .then(data => {
-                const tbody = document.getElementById('log-table-body');
-                tbody.innerHTML = data;
+                const display = document.getElementById('log-display');
+                display.innerHTML = data;
+                display.scrollTop = display.scrollHeight;
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                document.getElementById('log-display').innerHTML = "데이터 호출 오류: " + error;
+            });
     }
 
     setInterval(refreshLogs, 5000); 
