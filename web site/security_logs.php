@@ -5,19 +5,6 @@ if (!isset($_SESSION['userid'])) {
     exit;
 }
 $userId = $_SESSION['userid'];
-
-$host = '100.64.27.39';
-$user = 'jaewon';
-$pass = 'jaewon';
-$dbname = 'eoulrim_db';
-
-$conn = mysqli_connect($host, $user, $pass, $dbname);
-if (!$conn) {
-    die("보안 로그 DB 연결 실패: " . mysqli_connect_error());
-}
-
-$sql = "SELECT banned_ip, ban_time, unban_time, jail_name, status FROM fail2ban_logs ORDER BY ban_time DESC LIMIT 20";
-$result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -64,7 +51,7 @@ $result = mysqli_query($conn, $sql);
         <div class="container-fluid px-4">
             <div class="card log-card mb-4">
                 <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-terminal me-2"></i>Fail2Ban 차단 내역 (최근 20건)</h6>
+                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-terminal me-2"></i>Fail2Ban 차단 내역 (실시간 5초 갱신)</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -78,24 +65,8 @@ $result = mysqli_query($conn, $sql);
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php
-                                if (mysqli_num_rows($result) > 0) {
-                                    while($row = mysqli_fetch_assoc($result)) {
-                                        $statusClass = ($row['status'] == 'banned') ? 'bg-danger' : 'bg-success';
-                                        $unbanTime = $row['unban_time'] ? $row['unban_time'] : '-';
-                                        echo "<tr class='text-center'>";
-                                        echo "<td class='fw-bold text-primary'>{$row['banned_ip']}</td>";
-                                        echo "<td>{$row['ban_time']}</td>";
-                                        echo "<td>{$unbanTime}</td>";
-                                        echo "<td><span class='badge bg-secondary'>{$row['jail_name']}</span></td>";
-                                        echo "<td><span class='badge {$statusClass}'>" . strtoupper($row['status']) . "</span></td>";
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='5' class='text-center py-4'>차단 데이터가 없습니다.</td></tr>";
-                                }
-                                ?>
+                            <tbody id="log-table-body">
+                                <tr><td colspan='5' class='text-center py-4'>데이터를 불러오는 중입니다...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -104,6 +75,19 @@ $result = mysqli_query($conn, $sql);
         </div>
     </div>
 
-    <?php mysqli_close($conn); ?>
+    <script>
+    function refreshLogs() {
+        fetch('fetch_logs.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('log-table-body').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    setInterval(refreshLogs, 5000); 
+
+    refreshLogs();
+    </script>
 </body>
 </html>
