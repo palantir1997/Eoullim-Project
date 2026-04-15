@@ -51,10 +51,16 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
             <h3 class="h4 mb-0 text-gray-800 fw-bold">Real-time Web Access Monitor</h3>
-            <div class="user-info">
-                <span class="small fw-bold me-2"><?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?></span>
-                <i class="fas fa-user-circle fa-2x text-gray-400"></i>
-            </div>
+            
+            <ul class="navbar-nav align-items-center flex-row mb-0">
+                <li class="nav-item d-flex align-items-center">
+                    <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold">
+                        <?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?> (Online)
+                    </span>
+                    <i class="fas fa-user-circle fa-2x text-gray-400 me-3"></i>
+                    <a href="logout.php" class="btn btn-sm btn-outline-danger fw-bold">Logout</a>
+                </li>
+            </ul>
         </nav>
 
         <div class="container-fluid px-4">
