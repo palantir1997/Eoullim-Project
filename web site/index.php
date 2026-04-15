@@ -38,6 +38,11 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
         </a>
     </li>
     <li>
+        <a href="web_access_monitor.php" class="nav-link">
+            <i class="fas fa-fw fa-terminal me-2"></i> Web Monitor
+        </a>
+    </li>
+    <li>
         <a href="security_logs.php" class="nav-link">
             <i class="fas fa-fw fa-user-shield me-2"></i> Security Logs
         </a>
