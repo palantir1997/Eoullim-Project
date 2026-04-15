@@ -22,7 +22,19 @@ $userId = $_SESSION['userid'];
         .sidebar .navbar-brand { color: #fff; font-weight: bold; padding: 1.5rem 1rem; text-align: center; display: block; text-decoration: none; }
         .content-wrapper { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
         .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); z-index: 10; }
-        .log-card { border-radius: 1rem; border: none; box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.1); }
+        
+        /* 터미널 감성 블랙 스타일 적용 */
+        .log-card { border-radius: 5px; border: none; background-color: #000; box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.1); }
+        .table { color: #00ff00; font-family: 'Consolas', monospace; font-size: 0.9rem; margin-bottom: 0; }
+        .table-bordered { border-color: #333; }
+        .table-dark-custom { background-color: #000; }
+        .table-dark-custom thead { background-color: #222; color: #fff; border-bottom: 2px solid #444; }
+        .table-hover tbody tr:hover { background-color: rgba(255, 255, 255, 0.05); color: #fff; }
+        
+        /* 스크롤바 디자인 */
+        .table-responsive::-webkit-scrollbar { width: 8px; height: 8px; }
+        .table-responsive::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        .table-responsive { max-height: 600px; overflow-y: auto; }
     </style>
 </head>
 <body class="d-flex">
@@ -34,7 +46,7 @@ $userId = $_SESSION['userid'];
         <ul class="nav flex-column mb-auto">
             <li><a href="board.php" class="nav-link"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
             <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
-            <li></li><a href="web_access_monitor.php" class="nav-link"><i class="fas fa-fw fa-terminal me-2"></i> Web Monitor</a></li>
+            <li><a href="web_access_monitor.php" class="nav-link"><i class="fas fa-fw fa-terminal me-2"></i> Web Monitor</a></li>
             <li><a href="security_logs.php" class="nav-link active"><i class="fas fa-fw fa-user-shield me-2"></i> Security Logs</a></li>
             <li><a href="communication.php" class="nav-link"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
         </ul>
@@ -42,22 +54,28 @@ $userId = $_SESSION['userid'];
 
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
-            <h1 class="h4 mb-0 text-gray-800 fw-bold">Security Monitoring</h1>
-            <div class="user-info d-flex align-items-center">
-                <span class="me-3 d-none d-lg-inline text-gray-600 small fw-bold"><?php echo htmlspecialchars($userId); ?></span>
-                <a href="logout.php" class="btn btn-sm btn-outline-danger">Logout</a>
-            </div>
+            <h3 class="h4 mb-0 text-gray-800 fw-bold">Security Monitoring</h3>
+            <ul class="navbar-nav align-items-center flex-row mb-0">
+                <li class="nav-item d-flex align-items-center">
+                    <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold">
+                        <?php echo htmlspecialchars($userId); ?> (Online)
+                    </span>
+                    <i class="fas fa-user-circle fa-2x text-gray-400 me-3"></i>
+                    <a href="logout.php" class="btn btn-sm btn-outline-danger fw-bold">Logout</a>
+                </li>
+            </ul>
         </nav>
 
         <div class="container-fluid px-4">
-            <div class="card log-card mb-4">
+            <div class="card log-card">
                 <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-terminal me-2"></i>Fail2Ban 차단 내역 (실시간 5초 갱신)</h6>
+                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-user-shield me-2"></i>Fail2Ban 차단 내역 (실시간 5초 갱신)</h6>
+                    <span class="badge bg-danger">LIVE MONITORING</span>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light text-center">
+                        <table class="table table-dark-custom table-hover table-bordered mb-0">
+                            <thead class="text-center">
                                 <tr>
                                     <th>Banned IP</th>
                                     <th>Ban Time</th>
@@ -66,8 +84,8 @@ $userId = $_SESSION['userid'];
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="log-table-body">
-                                <tr><td colspan='5' class='text-center py-4'>데이터를 불러오는 중입니다...</td></tr>
+                            <tbody id="log-table-body" class="text-center align-middle">
+                                <tr><td colspan='5' class='py-5 text-muted'>데이터를 불러오는 중입니다...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -81,13 +99,13 @@ $userId = $_SESSION['userid'];
         fetch('fetch_logs.php')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('log-table-body').innerHTML = data;
+                const tbody = document.getElementById('log-table-body');
+                tbody.innerHTML = data;
             })
             .catch(error => console.error('Error:', error));
     }
 
     setInterval(refreshLogs, 5000); 
-
     refreshLogs();
     </script>
 </body>
