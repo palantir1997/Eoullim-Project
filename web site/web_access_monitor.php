@@ -42,8 +42,8 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
         <ul class="nav flex-column mb-auto">
             <li><a href="board.php" class="nav-link"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
             <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
-            <li><a href="security_logs.php" class="nav-link"><i class="fas fa-fw fa-user-shield me-2"></i> Security Logs</a></li>
             <li><a href="web_access_monitor.php" class="nav-link active"><i class="fas fa-fw fa-terminal me-2"></i> Web Access Monitor</a></li>
+            <li><a href="security_logs.php" class="nav-link"><i class="fas fa-fw fa-user-shield me-2"></i> Security Logs</a></li>
             <li><a href="communication.php" class="nav-link"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
         </ul>
     </div>
