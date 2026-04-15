@@ -91,7 +91,9 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
         function checkLoginStatus() {
             const authBtn = document.getElementById('authBtn');
             const userLabel = document.getElementById('userLabel');
@@ -120,8 +122,9 @@
             }
         }
 
-        
         checkLoginStatus();
     </script>
+</body>
+</html>
 </body>
 </html>

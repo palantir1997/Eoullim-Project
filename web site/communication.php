@@ -47,10 +47,12 @@
                     <button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button>
                 </div>
             </form>
-            <ul class="navbar-nav align-items-center flex-row mb-0">
+           <ul class="navbar-nav align-items-center flex-row mb-0">
                 <li class="nav-item d-flex align-items-center">
-                    <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold">Web Lead (Me)</span>
-                    <i class="fas fa-user-circle fa-2x text-gray-400"></i>
+                    <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold" id="userLabel">Guest</span>
+                    <i class="fas fa-user-circle fa-2x text-gray-400 me-3"></i>
+                    
+                    <button id="authBtn" class="btn btn-sm btn-outline-primary fw-bold" onclick="handleAuth()">Login</button>
                 </li>
             </ul>
         </nav>
