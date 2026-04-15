@@ -33,11 +33,28 @@ $userId = $_SESSION['userid'];
         <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
             <i class="fas fa-shield-alt me-2"></i>Aulim Security
         </a>
-        <ul class="nav flex-column mb-auto">
-            <li><a href="board.php" class="nav-link active"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
-            <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
-            <li><a href="communication.php" class="nav-link"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
-        </ul>
+       <ul class="nav flex-column mb-auto">
+    <li>
+        <a href="board.php" class="nav-link active">
+            <i class="fas fa-fw fa-table me-2"></i> Team Board
+        </a>
+    </li>
+    <li>
+        <a href="index.php" class="nav-link">
+            <i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard
+        </a>
+    </li>
+    <li>
+        <a href="security_logs.php" class="nav-link">
+            <i class="fas fa-fw fa-user-shield me-2"></i> Security Logs
+        </a>
+    </li>
+    <li>
+        <a href="communication.php" class="nav-link">
+            <i class="fas fa-fw fa-comments me-2"></i> Team Communication
+        </a>
+    </li>
+</ul>
     </div>
 
     <div class="content-wrapper">
@@ -146,10 +163,15 @@ $userId = $_SESSION['userid'];
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    document.querySelector('.btn-primary.btn-sm').setAttribute('data-bs-toggle', 'modal');
-    document.querySelector('.btn-primary.btn-sm').setAttribute('data-bs-target', '#newPostModal');
+   window.onload = function() {
+            const btn = document.querySelector('.btn-primary.btn-sm');
+            if(btn) {
+                btn.setAttribute('data-bs-toggle', 'modal');
+                btn.setAttribute('data-bs-target', '#newPostModal');
+            }
+        };
 </script>
 
     </body>
