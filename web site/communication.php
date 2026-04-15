@@ -39,15 +39,16 @@ $userId = $_SESSION['userid'];
 <body class="d-flex">
 
     <div class="sidebar d-flex flex-column flex-shrink-0" style="width: 250px;">
-        <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
-            <i class="fas fa-shield-alt me-2"></i>Aulim Security
-        </a>
-        <ul class="nav flex-column mb-auto">
-            <li><a href="board.php" class="nav-link"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
-            <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
-            <li><a href="communication.php" class="nav-link active"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
-        </ul>
-    </div>
+    <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
+        <i class="fas fa-shield-alt me-2"></i>Aulim Security
+    </a>
+    <ul class="nav flex-column mb-auto">
+        <li><a href="board.php" class="nav-link"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
+        <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
+        <li><a href="security_logs.php" class="nav-link"><i class="fas fa-fw fa-user-shield me-2"></i> Security Logs</a></li>
+        <li><a href="communication.php" class="nav-link active"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
+    </ul>
+</div>
 
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">

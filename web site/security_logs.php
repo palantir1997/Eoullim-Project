@@ -1,10 +1,10 @@
 <?php
 session_start();
-
 if (!isset($_SESSION['userid'])) {
     echo "<script>alert('권한이 없습니다. 로그인 후 이용해주세요.'); location.href='login.php';</script>";
     exit;
 }
+$userId = $_SESSION['userid'];
 
 $host = '100.64.27.39';
 $user = 'jaewon';
@@ -19,71 +19,91 @@ if (!$conn) {
 $sql = "SELECT banned_ip, ban_time, unban_time, jail_name, status FROM fail2ban_logs ORDER BY ban_time DESC LIMIT 20";
 $result = mysqli_query($conn, $sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aulim Security - IDS Logs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fc; padding: 2rem; }
-        .log-card { border-radius: 1rem; overflow: hidden; border: none; box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.1); }
-        .status-banned { color: #e74a3b; fw-bold; }
-        .status-unbanned { color: #1cc88a; }
+        body { background-color: #f8f9fc; }
+        .sidebar { min-height: 100vh; background-color: #1c2331; }
+        .sidebar .nav-link { color: rgba(255,255,255,.7); padding: 1rem 1.5rem; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background-color: rgba(255,255,255,.1); }
+        .sidebar .navbar-brand { color: #fff; font-weight: bold; padding: 1.5rem 1rem; text-align: center; display: block; text-decoration: none; }
+        .content-wrapper { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); z-index: 10; }
+        .log-card { border-radius: 1rem; border: none; box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.1); }
     </style>
 </head>
-<body>
+<body class="d-flex">
 
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 fw-bold"><i class="fas fa-user-shield me-2"></i>Fail2Ban 차단 내역 (IDS)</h1>
-        <a href="index.php" class="btn btn-sm btn-secondary shadow-sm"><i class="fas fa-arrow-left me-1"></i> 대시보드로 돌아가기</a>
+    <div class="sidebar d-flex flex-column flex-shrink-0" style="width: 250px;">
+        <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
+            <i class="fas fa-shield-alt me-2"></i>Aulim Security
+        </a>
+        <ul class="nav flex-column mb-auto">
+            <li><a href="board.php" class="nav-link"><i class="fas fa-fw fa-table me-2"></i> Team Board</a></li>
+            <li><a href="index.php" class="nav-link"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard</a></li>
+            <li><a href="security_logs.php" class="nav-link active"><i class="fas fa-fw fa-user-shield me-2"></i> Security Logs</a></li>
+            <li><a href="communication.php" class="nav-link"><i class="fas fa-fw fa-comments me-2"></i> Team Communication</a></li>
+        </ul>
     </div>
 
-    <div class="card log-card">
-        <div class="card-header bg-dark py-3">
-            <h6 class="m-0 font-weight-bold text-white">실시간 침입 탐지 로그 (최근 20건)</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
-                    <thead class="table-light text-center">
-                        <tr>
-                            <th>Banned IP</th>
-                            <th>Ban Time</th>
-                            <th>Unban Time</th>
-                            <th>Jail Name</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                $statusClass = ($row['status'] == 'banned') ? 'bg-danger' : 'bg-success';
-                                $unbanTime = $row['unban_time'] ? $row['unban_time'] : '<span class="text-muted">-</span>';
-                                
-                                echo "<tr class='text-center'>";
-                                echo "<td class='fw-bold text-primary'>{$row['banned_ip']}</td>";
-                                echo "<td>{$row['ban_time']}</td>";
-                                echo "<td>{$unbanTime}</td>";
-                                echo "<td><span class='badge bg-secondary'>{$row['jail_name']}</span></td>";
-                                echo "<td><span class='badge {$statusClass}'>" . strtoupper($row['status']) . "</span></td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='5' class='text-center py-4'>데이터가 없습니다.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
+    <div class="content-wrapper">
+        <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
+            <h1 class="h4 mb-0 text-gray-800 fw-bold">Security Monitoring</h1>
+            <div class="user-info d-flex align-items-center">
+                <span class="me-3 d-none d-lg-inline text-gray-600 small fw-bold"><?php echo htmlspecialchars($userId); ?></span>
+                <a href="logout.php" class="btn btn-sm btn-outline-danger">Logout</a>
+            </div>
+        </nav>
+
+        <div class="container-fluid px-4">
+            <div class="card log-card mb-4">
+                <div class="card-header bg-dark py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-terminal me-2"></i>Fail2Ban 차단 내역 (최근 20건)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>Banned IP</th>
+                                    <th>Ban Time</th>
+                                    <th>Unban Time</th>
+                                    <th>Jail Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (mysqli_num_rows($result) > 0) {
+                                    while($row = mysqli_fetch_assoc($result)) {
+                                        $statusClass = ($row['status'] == 'banned') ? 'bg-danger' : 'bg-success';
+                                        $unbanTime = $row['unban_time'] ? $row['unban_time'] : '-';
+                                        echo "<tr class='text-center'>";
+                                        echo "<td class='fw-bold text-primary'>{$row['banned_ip']}</td>";
+                                        echo "<td>{$row['ban_time']}</td>";
+                                        echo "<td>{$unbanTime}</td>";
+                                        echo "<td><span class='badge bg-secondary'>{$row['jail_name']}</span></td>";
+                                        echo "<td><span class='badge {$statusClass}'>" . strtoupper($row['status']) . "</span></td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='5' class='text-center py-4'>차단 데이터가 없습니다.</td></tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<?php mysqli_close($conn); ?>
+    <?php mysqli_close($conn); ?>
 </body>
 </html>
