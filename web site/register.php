@@ -1,66 +1,42 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aulim Security - Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #1c2331; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .register-card { width: 100%; max-width: 450px; padding: 2rem; border-radius: 1rem; background: #fff; box-shadow: 0 1rem 3rem rgba(0,0,0,0.3); }
-        .btn-register { background-color: #1c2331; color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; width: 100%; }
-        .password-hint { font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem; }
-    </style>
-</head>
-<body>
-    <div class="register-card">
-        <h3 class="text-center fw-bold mb-4"><i class="fas fa-user-plus me-2"></i>회원가입</h3>
-       <form id="registerForm" action="register.php" method="POST">
-    <div class="mb-3">
-        <label class="form-label small fw-bold">ID</label>
-        <input type="text" name="userid" class="form-control" placeholder="사용할 아이디 입력" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label small fw-bold">Password</label>
-        <input type="password" id="pw" name="password" class="form-control" placeholder="비밀번호 입력" required>
-        <p class="password-hint">* 보안을 위해 대문자, 소문자를 포함해야 합니다.</p>
-    </div>
-    <div class="mb-4">
-        <label class="form-label small fw-bold">Confirm Password</label>
-        <input type="password" id="pw_confirm" name="confirm_password" class="form-control" placeholder="비밀번호 재입력" required>
-    </div>
-    <button type="submit" class="btn btn-register">가입하기</button>
-</form>
-            <div class="text-center mt-3">
-                <a href="login.php" class="small text-decoration-none">이미 계정이 있으신가요? 로그인</a>
-            </div>
-        </form>
-    </div>
+<?php
+$host = '100.64.27.39';
+$user = 'jaewon';
+$pass = 'jaewon';
+$dbname = 'eoulrim_db';
 
-    <script>
-        // 예슬님이 요청한 JS 보안 테스트 로직
-        document.getElementById('registerForm').onsubmit = function(e) {
-            const pw = document.getElementById('pw').value;
-            const pwConfirm = document.getElementById('pw_confirm').value;
-            
-            // 대문자와 소문자가 섞여있는지 검사하는 정규표현식
-            const hasUpperCase = /[A-Z]/.test(pw);
-            const hasLowerCase = /[a-z]/.test(pw);
+$conn = new mysqli($host, $user, $pass, $dbname);
 
-            if (!hasUpperCase || !hasLowerCase) {
-                alert("보안 정책상 비밀번호에 대문자와 소문자를 모두 포함해야 합니다!");
-                e.preventDefault(); // 제출 중단
-                return false;
-            }
+if ($conn->connect_error) {
+    die("DB 연결 실패: " . $conn->connect_error);
+}
 
-            if (pw !== pwConfirm) {
-                alert("비밀번호가 일치하지 않습니다.");
-                e.preventDefault();
-                return false;
-            }
+$uid = $_POST['userid'];
+$upw = $_POST['password'];
 
-        };
-    </script>
-</body>
-</html>
+$check_stmt = $conn->prepare("SELECT userid FROM users WHERE userid = ?");
+$check_stmt->bind_param("s", $uid);
+$check_stmt->execute();
+$result = $check_stmt->get_result();
+
+if ($result->num_rows > 0) {
+    echo "<script>alert('이미 사용 중인 아이디입니다.'); history.back();</script>";
+    exit;
+}
+
+$hashed_pw = password_hash($upw, PASSWORD_DEFAULT);
+
+$stmt = $conn->prepare("INSERT INTO users (userid, password) VALUES (?, ?)");
+$stmt->bind_param("ss", $uid, $hashed_pw);
+
+if ($stmt->execute()) {
+    echo "<script>
+        alert('회원가입이 완료되었습니다! 로그인해 주세요.');
+        location.href = 'login.php';
+    </script>";
+} else {
+    echo "<script>alert('가입 중 오류가 발생했습니다.'); history.back();</script>";
+}
+
+$stmt->close();
+$conn->close();
+?>

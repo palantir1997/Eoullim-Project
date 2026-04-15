@@ -1,3 +1,14 @@
+<?php
+session_start();
+if (!isset($_SESSION['userid'])) {
+    echo "<script>
+        alert('회원만 이용할 수 있습니다. 로그인해주세요!');
+        location.href = 'login.php';
+    </script>";
+    exit;
+}
+$userId = $_SESSION['userid'];
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #f8f9fc; }
-        .sidebar { min-height: 100vh; background-color: #1c2331; } 
+        .sidebar { min-height: 100vh; background-color: #1c2331; }
         .sidebar .nav-link { color: rgba(255,255,255,.7); padding: 1rem 1.5rem; }
         .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background-color: rgba(255,255,255,.1); }
         .sidebar .navbar-brand { color: #fff; font-weight: bold; padding: 1.5rem 1rem; text-align: center; display: block; text-decoration: none; }
@@ -19,7 +30,7 @@
 <body class="d-flex">
 
     <div class="sidebar d-flex flex-column flex-shrink-0" style="width: 250px;">
-        <a href="board.php" class="navbar-brand border-bottom border-secondary mb-3">
+        <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
             <i class="fas fa-shield-alt me-2"></i>Aulim Security
         </a>
         <ul class="nav flex-column mb-auto">
@@ -30,7 +41,6 @@
     </div>
 
     <div class="content-wrapper">
-        
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
             <form class="d-none d-sm-inline-block form-inline mr-auto" style="width: 350px;">
                 <div class="input-group">
@@ -38,14 +48,13 @@
                     <button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button>
                 </div>
             </form>
-         <ul class="navbar-nav align-items-center flex-row mb-0">
-        <li class="nav-item d-flex align-items-center">
-        <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold" id="userLabel">Guest</span>
-        <i class="fas fa-user-circle fa-2x text-gray-400 me-3"></i>
-        
-        <button id="authBtn" class="btn btn-sm btn-outline-primary fw-bold" onclick="handleAuth()">Login</button>
-    </li>
-</ul>
+            <ul class="navbar-nav align-items-center flex-row mb-0">
+                <li class="nav-item d-flex align-items-center">
+                    <span class="me-2 d-none d-lg-inline text-gray-600 small fw-bold">
+                        <?php echo htmlspecialchars($userId); ?> (Online)
+                    </span>
+                    <i class="fas fa-user-circle fa-2x text-gray-400 me-3"></i>
+                    <a href="logout.php" class="btn btn-sm btn-outline-danger fw-bold">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -112,40 +121,5 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-     function checkLoginStatus() {
-        const authBtn = document.getElementById('authBtn');
-        const userLabel = document.getElementById('userLabel');
-        
-        const token = localStorage.getItem('token'); 
-        const userId = localStorage.getItem('user_id');
-
-        if (token && userId) {
-            userLabel.textContent = userId + " (Online)";
-            authBtn.textContent = 'Logout';
-            authBtn.className = 'btn btn-sm btn-outline-danger fw-bold';
-        } else {
-            userLabel.textContent = "Guest";
-            authBtn.textContent = 'Login';
-            authBtn.className = 'btn btn-sm btn-outline-primary fw-bold';
-        }
-    }
-
-    async function handleAuth() {
-        if (localStorage.getItem('token')) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user_id');
-            alert('로그아웃 되었습니다.');
-            window.location.href = 'login.php';
-        } else {
-            window.location.href = 'login.php';
-        }
-    }
-    
-    checkLoginStatus();   
-    </script>
-</body>
-</html>
-</body>
+    </body>
 </html>

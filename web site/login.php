@@ -89,9 +89,9 @@
 
         <div class="text-center">
             <p class="small text-muted mb-0">계정이 없으신가요?</p>
-            <a href="register.php" class="register-link">새로운 계정 만들기 (회원가입)</a>
+            <a href="register_form.php" class="register-link">새로운 계정 만들기 (회원가입)</a>
         </div>
-    </form> 
+    </form>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
