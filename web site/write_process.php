@@ -1,25 +1,17 @@
 <?php
 session_start();
 
+include 'db.php'; 
+
 if (!isset($_SESSION['userid'])) {
     exit('접근 권한이 없습니다.');
 }
 
-$host = "localhost";
-$user = "root";      
-$pass = "";          
-$dbname = "aulim";   
-
-$conn = mysqli_connect($host, $user, $pass, $dbname);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
 
 $post_content = mysqli_real_escape_string($conn, $_POST['post_content']);
 $author = mysqli_real_escape_string($conn, $_POST['author']);
 
-$sql = "INSERT INTO team_board (post, author, reg_date) VALUES ('$post_content', '$author', NOW())";
+$sql = "INSERT INTO team_board (post, author) VALUES ('$post_content', '$author')";
 
 if (mysqli_query($conn, $sql)) {
     echo "<script>
