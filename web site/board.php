@@ -119,7 +119,38 @@ $userId = $_SESSION['userid'];
             </div>
         </div>
     </div>
+    <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPostModalLabel">새 게시글 작성</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="write_process.php" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Post Content (내용)</label>
+                        <input type="text" name="post_content" class="form-control" placeholder="게시글 내용을 입력하세요" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Author (작성자)</label>
+                        <input type="text" name="author" class="form-control" value="<?php echo htmlspecialchars($userId); ?>" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    document.querySelector('.btn-primary.btn-sm').setAttribute('data-bs-toggle', 'modal');
+    document.querySelector('.btn-primary.btn-sm').setAttribute('data-bs-target', '#newPostModal');
+</script>
+
     </body>
 </html>
