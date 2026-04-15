@@ -2,18 +2,24 @@
 $logPath = '/var/log/httpd/access_log';
 
 if (file_exists($logPath)) {
-    $lines = explode("\n", shell_exec("tail -n 15 " . escapeshellarg($logPath)));
+    $output = shell_exec("tail -n 15 " . escapeshellarg($logPath));
+    if (!$output) {
+        echo "로그 파일이 비어있거나 읽을 수 없습니다.";
+        exit;
+    }
+
+    $lines = explode("\n", trim($output));
     
     foreach ($lines as $line) {
         if (empty(trim($line))) continue;
-
         $parts = explode(' ', $line);
         
-        $ip = $parts[0]; // IP
-        $time = str_replace(['[', ']'], '', $parts[3]); // 시간 부분
-        $method = str_replace('"', '', $parts[5]); // GET/POST
-        $path = $parts[6]; // 경로
-        $status = $parts[8]; // 응답 코드
+        $ip = $parts[0]; 
+        $time = str_replace('[', '', $parts[3]); 
+        
+        $method = isset($parts[5]) ? str_replace('"', '', $parts[5]) : '-';
+        $path = isset($parts[6]) ? $parts[6] : '-';
+        $status = isset($parts[8]) ? $parts[8] : '-';
 
         echo "<div class='log-entry'>";
         echo "<span style='color: #888;'>[$time]</span> ";
@@ -23,6 +29,6 @@ if (file_exists($logPath)) {
         echo "</div>";
     }
 } else {
-    echo "로그 없음";
+    echo "로그 파일을 찾을 수 없습니다: $logPath";
 }
 ?>
