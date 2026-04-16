@@ -14,17 +14,17 @@ if (mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
         $statusClass = ($row['status'] == 'banned') ? 'bg-danger' : 'bg-success';
         $statusText = strtoupper($row['status']);
-
-        echo "<div class='log-item d-flex align-items-center py-2 border-bottom border-dark border-opacity-25'>";
+        
+        echo "<div class='log-entry d-flex align-items-center py-1'>";
         echo "<span class='text-secondary me-2'>[" . $row['ban_time'] . "]</span>";
         echo "<span class='fw-bold me-2' style='color: #00ff00;'>" . $row['banned_ip'] . "</span>";
         echo "<span class='text-secondary me-2'> — </span>";
-        echo "<span class='text-info me-auto'>" . $row['jail_name'] . "</span>";
-        echo "<span class='badge {$statusClass} ms-2' style='font-size: 0.7rem;'>" . $statusText . "</span>";
+        echo "<span class='text-info me-auto'>[" . $row['jail_name'] . "]</span>";
+        echo "<span class='badge {$statusClass} ms-2' style='font-size: 0.75rem; min-width: 80px;'>" . $statusText . "</span>";
         echo "</div>";
     }
 } else {
-    echo "<div class='p-3 text-success'>로그 없음</div>";
+    echo "<div class='py-2 text-secondary'>차단 내역이 없습니다.</div>";
 }
 mysqli_close($conn);
 ?>

@@ -24,36 +24,23 @@ $userId = $_SESSION['userid'];
         .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); }
 
         #log-display { 
-            background-color: #000; 
-            color: #00ff00; 
-            font-family: 'Consolas', monospace; 
-            padding: 20px; 
-            height: 550px; 
-            overflow-y: auto; 
-            border-radius: 5px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: normal;
-        }
-        .log-item {
-            font-weight: 400;
-        }
-
-        .log-item .text-secondary {
-            color: #888 !important;
-        }
-
-        .log-item .text-info {
-            color: #0dcaf0 !important;
-        }
-
-        #log-display::-webkit-scrollbar {
-            width: 8px;
-        }
-        #log-display::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 10px;
-        }
+        background-color: #000; 
+        color: #00ff00; 
+        font-family: 'Consolas', monospace; 
+        padding: 20px; 
+        height: 500px; 
+        overflow-y: auto; 
+        border-radius: 5px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .log-entry { 
+        border-bottom: 1px solid #222; 
+    }
+    
+    .text-secondary { color: #888 !important; }
+    .text-info { color: #0dcaf0 !important; }
     </style>
 </head>
 <body class="d-flex">
