@@ -122,10 +122,19 @@ $userId = $_SESSION['userid'];
                                             <?php echo htmlspecialchars($row['title']); ?>
                                         </a>
                                     </td>
-                                    <td>
-                                        <?php if (!empty($row['file_name'])) { ?>
-                                            <i class="fas fa-paperclip text-secondary" title="<?php echo htmlspecialchars($row['file_name']); ?>"></i>
-                                        <?php } ?>
+                                   <td>
+                                    <?php if (!empty($row['file_name'])) { ?>
+                                        <a href="uploads/<?php echo urlencode($row['file_name']); ?>" 
+                                        class="text-decoration-none text-primary" 
+                                        download="<?php echo htmlspecialchars($row['file_name']); ?>">
+                                        
+                                        <i class="fas fa-save me-1"></i>
+                                        <span style="font-size: 0.85em;"><?php echo htmlspecialchars($row['file_name']); ?></span>
+                                        
+                                        </a>
+                                    <?php } else { ?>
+                                        <span class="text-muted" style="font-size: 0.8em;">없음</span>
+                                    <?php } ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($row['author']); ?></td>
                                     <td><?php echo $row['reg_date']; ?></td>
