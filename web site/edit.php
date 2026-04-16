@@ -61,10 +61,19 @@ $userId = $_SESSION['userid'];
                     <label class="form-label fw-bold text-primary">첨부 파일 수정</label>
                     
                     <?php if (!empty($row['file_name'])) { ?>
-                        <div class="mb-2 text-secondary">
-                            <i class="fas fa-save me-1"></i> 현재 파일: <strong><?php echo htmlspecialchars($row['file_name']); ?></strong>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="text-secondary me-3">
+                                <i class="fas fa-save me-1"></i> 현재 파일: <strong><?php echo htmlspecialchars($row['file_name']); ?></strong>
+                            </span>
+                            
+                            <div class="form-check text-danger mb-0">
+                                <input class="form-check-input" type="checkbox" name="delete_file" value="Y" id="deleteFileCheck">
+                                <label class="form-check-label" for="deleteFileCheck">
+                                    <i class="fas fa-trash-alt"></i> 이 파일 삭제하기
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-text mb-2 text-danger" style="font-size: 0.8em;">※ 새로운 파일을 선택하면 기존 파일이 덮어씌워집니다. 유지하시려면 선택하지 마세요.</div>
+                        <div class="form-text mb-2 text-muted" style="font-size: 0.8em;">※ 새로운 파일을 선택하거나 '삭제하기'를 체크하면 기존 파일이 지워집니다.</div>
                     <?php } else { ?>
                         <div class="form-text mb-2" style="font-size: 0.8em;">현재 등록된 파일이 없습니다. 새로 추가할 수 있습니다.</div>
                     <?php } ?>

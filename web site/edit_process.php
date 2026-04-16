@@ -12,7 +12,7 @@ if (isset($_POST['idx']) && isset($_POST['title']) && isset($_POST['post_content
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $post_content = mysqli_real_escape_string($conn, $_POST['post_content']);
 
-    $check_sql = "SELECT author FROM team_board WHERE idx = $idx";
+    $check_sql = "SELECT author, file_name FROM team_board WHERE idx = $idx";
     $check_result = mysqli_query($conn, $check_sql);
     $row = mysqli_fetch_assoc($check_result);
 
@@ -21,6 +21,7 @@ if (isset($_POST['idx']) && isset($_POST['title']) && isset($_POST['post_content
         exit;
     }
 
+    $old_file = $row['file_name'];
     $update_file_sql = ""; 
 
     if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] == 0) {
@@ -31,9 +32,18 @@ if (isset($_POST['idx']) && isset($_POST['title']) && isset($_POST['post_content
         $target_file = $target_dir . $file_name;
 
         if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], $target_file)) {
+            if (!empty($old_file) && file_exists($target_dir . $old_file)) {
+                unlink($target_dir . $old_file); 
+            }
             $file_name_db = mysqli_real_escape_string($conn, $file_name);
             $update_file_sql = ", file_name = '$file_name_db'"; 
         }
+    } 
+    else if (isset($_POST['delete_file']) && $_POST['delete_file'] === 'Y') {
+        if (!empty($old_file) && file_exists("uploads/" . $old_file)) {
+            unlink("uploads/" . $old_file); 
+        }
+        $update_file_sql = ", file_name = ''"; 
     }
 
     $sql = "UPDATE team_board SET title = '$title', post = '$post_content' $update_file_sql WHERE idx = $idx";
