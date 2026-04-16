@@ -100,46 +100,41 @@ $userId = $_SESSION['userid'];
                     <button class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i> New Post</button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-hover text-center align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width: 60%;">Post</th>
-                                <th style="width: 20%;">Author</th>
-                                <th style="width: 20%;">Actions</th>
-                            </tr>
-                         <thead class="table-light">
-                        <tr>
-                            <th style="width: 50%;">Post (제목/내용)</th>
-                            <th style="width: 15%;">Author</th>
-                            <th style="width: 20%;">Date</th>
-                            <th style="width: 15%;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result && mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                                <tr>
-                                    <td class="text-start ps-3">
-                                        <strong><?php echo $row['idx']; ?>. <?php echo htmlspecialchars($row['title']); ?></strong><br>
-                                        <span class="text-muted" style="font-size: 0.9em;"><?php echo htmlspecialchars($row['post']); ?></span>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($row['author']); ?></td>
-                                    <td><?php echo substr($row['reg_date'], 0, 10); ?></td>
-                                    <td>
-                                        <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                        <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        } else {
-                            echo "<tr><td colspan='4' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                    </table>
+                  <table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 50%;">Post (제목)</th>
+            <th style="width: 15%;">Author</th>
+            <th style="width: 20%;">Date (등록일시)</th>
+            <th style="width: 15%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result && mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+        ?>
+                <tr>
+                    <td class="text-start ps-3">
+                        <a href="view.php?idx=<?php echo $row['idx']; ?>" class="text-decoration-none text-dark fw-bold">
+                            <?php echo $row['idx']; ?>. <?php echo htmlspecialchars($row['title']); ?>
+                        </a>
+                    </td>
+                    <td><?php echo htmlspecialchars($row['author']); ?></td>
+                    <td><?php echo $row['reg_date']; ?></td>
+                    <td>
+                        <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
+                    </td>
+                </tr>
+        <?php
+            }
+        } else {
+            echo "<tr><td colspan='4' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table> 
                 </div>
             </div>
 
