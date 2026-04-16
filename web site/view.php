@@ -44,7 +44,15 @@ if(!$row) {
             </div>
             <div class="card-footer bg-white py-3 text-end">
                 <a href="board.php" class="btn btn-secondary">목록으로</a>
-                <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-primary">수정하기</a>
+                
+                <?php 
+                if ($_SESSION['userid'] === $row['author']) { 
+                ?>
+                    <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-primary">수정하기</a>
+                    <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+                <?php 
+                } 
+                ?>
             </div>
         </div>
     </div>

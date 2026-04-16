@@ -128,87 +128,94 @@ $userId = $_SESSION['userid'];
                                 <td><?php echo htmlspecialchars($row['author']); ?></td>
                                 <td><?php echo $row['reg_date']; ?></td>
                                 <td>
+                                <?php 
+                                if ($_SESSION['userid'] === $row['author']) { 
+                                ?>
                                     <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
                                     <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
-                                </td>
+                                <?php 
+                                } else {
+                                    echo "<span class='text-muted' style='font-size:0.8em;'>권한없음</span>";
+                                }
+                                ?>
+                            </td>
                             </tr>
-                    <?php
-                        }
-                    } else {
-                        // 컬럼이 5개로 늘었으므로 colspan도 5로 변경
-                        echo "<tr><td colspan='5' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>  
-                </div>
-            </div>
+                            <?php
+                                }
+                            } else {
+                                echo "<tr><td colspan='5' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>  
+                        </div>
+                    </div>
 
-            <div class="card shadow-sm border-left-primary">
-                <div class="card-body">
-                    <h6 class="fw-bold text-primary mb-3">File Upload</h6>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="inputGroupFile04">
-                        <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">
-                            <i class="fas fa-upload me-1"></i> Upload
-                        </button>
+                    <div class="card shadow-sm border-left-primary">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary mb-3">File Upload</h6>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="inputGroupFile04">
+                                <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">
+                                    <i class="fas fa-upload me-1"></i> Upload
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newPostModalLabel">새 게시글 작성</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="write_process.php" method="POST">
+                        <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Title (제목)</label>
+                            <input type="text" name="title" class="form-control" placeholder="게시글 제목을 입력하세요" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Post Content (내용)</label>
+                            <textarea name="post_content" class="form-control" rows="3" placeholder="게시글 내용을 입력하세요" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Author (작성자)</label>
+                            <input type="text" name="author" class="form-control" value="<?php echo htmlspecialchars($userId); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">등록하기</button>
+                    </div>
+                    <div class="card shadow-sm border-left-primary">
+            <div class="card-body">
+                <h6 class="fw-bold text-primary mb-3">File Upload (자료실)</h6>
+                <form action="upload_process.php" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" name="upload_file" class="form-control" id="inputGroupFile04" required>
+                        <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">
+                            <i class="fas fa-upload me-1"></i> Upload
+                        </button>
+                    </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newPostModalLabel">새 게시글 작성</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="write_process.php" method="POST">
-                <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Title (제목)</label>
-                    <input type="text" name="title" class="form-control" placeholder="게시글 제목을 입력하세요" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Post Content (내용)</label>
-                    <textarea name="post_content" class="form-control" rows="3" placeholder="게시글 내용을 입력하세요" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Author (작성자)</label>
-                    <input type="text" name="author" class="form-control" value="<?php echo htmlspecialchars($userId); ?>" readonly>
-                </div>
-            </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="submit" class="btn btn-primary">등록하기</button>
-                </div>
-                <div class="card shadow-sm border-left-primary">
-        <div class="card-body">
-            <h6 class="fw-bold text-primary mb-3">File Upload (자료실)</h6>
-            <form action="upload_process.php" method="POST" enctype="multipart/form-data">
-                <div class="input-group">
-                    <input type="file" name="upload_file" class="form-control" id="inputGroupFile04" required>
-                    <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">
-                        <i class="fas fa-upload me-1"></i> Upload
-                    </button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-   window.onload = function() {
-            const btn = document.querySelector('.btn-primary.btn-sm');
-            if(btn) {
-                btn.setAttribute('data-bs-toggle', 'modal');
-                btn.setAttribute('data-bs-target', '#newPostModal');
-            }
-        };
-</script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+        window.onload = function() {
+                    const btn = document.querySelector('.btn-primary.btn-sm');
+                    if(btn) {
+                        btn.setAttribute('data-bs-toggle', 'modal');
+                        btn.setAttribute('data-bs-target', '#newPostModal');
+                    }
+                };
+        </script>
 
-    </body>
-</html>
+            </body>
+        </html>

@@ -21,6 +21,10 @@ if(!$row) {
     echo "<script>alert('존재하지 않는 게시글입니다.'); location.href='board.php';</script>";
     exit;
 }
+if ($row['author'] !== $_SESSION['userid']) {
+    echo "<script>alert('본인이 작성한 글만 수정할 수 있습니다.'); history.back();</script>";
+    exit;
+}
 $userId = $_SESSION['userid'];
 ?>
 <!DOCTYPE html>

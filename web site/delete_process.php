@@ -9,14 +9,21 @@ $host = '100.64.27.39';
 $user = 'jaewon'; 
 $pass = 'jaewon'; 
 $dbname = 'eoulrim_db'; 
-
 $conn = mysqli_connect($host, $user, $pass, $dbname);
 
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
 if ($idx > 0) {
+    $check_sql = "SELECT author FROM team_board WHERE idx = $idx";
+    $check_result = mysqli_query($conn, $check_sql);
+    $row = mysqli_fetch_assoc($check_result);
+
+    if ($row['author'] !== $_SESSION['userid']) {
+        echo "<script>alert('본인이 작성한 글만 삭제할 수 있습니다.'); history.back();</script>";
+        exit;
+    }
+
     $sql = "DELETE FROM team_board WHERE idx = $idx";
-    
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert('게시글이 성공적으로 삭제되었습니다.'); location.href='board.php';</script>";
     } else {
