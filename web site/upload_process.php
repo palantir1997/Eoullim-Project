@@ -5,28 +5,49 @@ if (!isset($_SESSION['userid'])) {
     exit;
 }
 
-$target_dir = "uploads/"; 
+$host = '100.64.27.39';
+$user = 'jaewon'; 
+$pass = 'jaewon'; 
+$dbname = 'eoulrim_db'; 
+$conn = mysqli_connect($host, $user, $pass, $dbname);
 
-if (!is_dir($target_dir)) {
-    mkdir($target_dir, 0777, true);
-}
+$title = "자료실 업로드";
+$post_content = "첨부된 파일을 확인해주세요.";
+$author = $_SESSION['userid'];
 
-if (isset($_FILES["upload_file"])) {
-    $file_name = basename($_FILES["upload_file"]["name"]); 
-    $target_file = $target_dir . $file_name; 
+$file_msg = ""; 
+
+// 1. 파일이 선택되었는지(에러 코드 0) 확인
+if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] == 0) {
+    $target_dir = "uploads/";
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
+    
+    $file_name = basename($_FILES["upload_file"]["name"]);
+    $target_file = $target_dir . $file_name;
 
     if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], $target_file)) {
-        echo "<script>
-            alert('파일이 성공적으로 업로드되었습니다: $file_name');
-            location.href='board.php';
-        </script>";
+        $file_msg = "\\n(첨부파일: $file_name)";
+
     } else {
-        echo "<script>
-            alert('파일 업로드 중 서버 오류가 발생했습니다.');
-            location.href='board.php';
-        </script>";
+        $file_msg = "\\n(파일 첨부 실패 - 권한 확인)";
     }
 } else {
-    echo "<script>alert('업로드할 파일이 없습니다.'); location.href='board.php';</script>";
+    $file_msg = "\\n(첨부된 파일 없음)";
+    $title = "내용 없는 게시글";
 }
+
+$sql = "INSERT INTO team_board (title, post, author, reg_date) VALUES ('$title', '$post_content', '$author', NOW())";
+
+if (mysqli_query($conn, $sql)) {
+    echo "<script>
+        alert('글이 성공적으로 등록되었습니다.' + '$file_msg');
+        location.href = 'board.php';
+    </script>";
+} else {
+    echo "데이터 저장 에러: " . mysqli_error($conn);
+}
+
+mysqli_close($conn);
 ?>

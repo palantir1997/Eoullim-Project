@@ -150,18 +150,6 @@ $userId = $_SESSION['userid'];
                     </table>  
                         </div>
                     </div>
-
-                    <div class="card shadow-sm border-left-primary">
-                        <div class="card-body">
-                            <h6 class="fw-bold text-primary mb-3">File Upload</h6>
-                            <div class="input-group">
-                                <input type="file" class="form-control" id="inputGroupFile04">
-                                <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">
-                                    <i class="fas fa-upload me-1"></i> Upload
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal fade" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
@@ -196,7 +184,7 @@ $userId = $_SESSION['userid'];
                 <h6 class="fw-bold text-primary mb-3">File Upload (자료실)</h6>
                 <form action="upload_process.php" method="POST" enctype="multipart/form-data">
                     <div class="input-group">
-                        <input type="file" name="upload_file" class="form-control" id="inputGroupFile04" required>
+                        <input type="file" name="upload_file" class="form-control" id="inputGroupFile04">
                         <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">
                             <i class="fas fa-upload me-1"></i> Upload
                         </button>
