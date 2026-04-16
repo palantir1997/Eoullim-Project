@@ -113,7 +113,6 @@ $userId = $_SESSION['userid'];
                 <tbody>
                     <?php
                     if ($result && mysqli_num_rows($result) > 0) {
-                        // 전체 게시글 개수를 가져와서 화면용 시작 번호로 설정합니다.
                         $num = mysqli_num_rows($result);
 
                         while($row = mysqli_fetch_assoc($result)) {
@@ -185,6 +184,16 @@ $userId = $_SESSION['userid'];
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     <button type="submit" class="btn btn-primary">등록하기</button>
                 </div>
+                <div class="card shadow-sm border-left-primary">
+        <div class="card-body">
+            <h6 class="fw-bold text-primary mb-3">File Upload (자료실)</h6>
+            <form action="upload_process.php" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <input type="file" name="upload_file" class="form-control" id="inputGroupFile04" required>
+                    <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">
+                        <i class="fas fa-upload me-1"></i> Upload
+                    </button>
+            </div>
             </form>
         </div>
     </div>
