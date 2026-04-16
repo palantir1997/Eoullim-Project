@@ -96,6 +96,11 @@
 
 ### 네트워크 구성도
 
+<h3 align="center">🖥️ Infrastructure & Server Architecture</h3>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d84ea5b3-2a3d-47fc-a442-aa6b625f8feb" width="100%">
+</p>
+
 ```
 Region_A (DB Master & Primary Collector)
 ├── Server A: 웹 서비스 구축 사용
