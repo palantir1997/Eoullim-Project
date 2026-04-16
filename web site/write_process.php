@@ -17,12 +17,13 @@ if (!isset($_SESSION['userid'])) {
     exit;
 }
 
-if (isset($_POST['post_content']) && isset($_POST['author'])) {
+if (isset($_POST['title']) && isset($_POST['post_content']) && isset($_POST['author'])) {
     
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
     $post_content = mysqli_real_escape_string($conn, $_POST['post_content']);
     $author = mysqli_real_escape_string($conn, $_POST['author']);
 
-    $sql = "INSERT INTO team_board (post, author, reg_date) VALUES ('$post_content', '$author', NOW())";
+    $sql = "INSERT INTO team_board (title, post, author, reg_date) VALUES ('$title', '$post_content', '$author', NOW())";
 
     if (mysqli_query($conn, $sql)) {
         echo "<script>
@@ -35,6 +36,5 @@ if (isset($_POST['post_content']) && isset($_POST['author'])) {
 } else {
     echo "<script>alert('정상적인 접근이 아닙니다.'); location.href='board.php';</script>";
 }
-
 mysqli_close($conn);
 ?>

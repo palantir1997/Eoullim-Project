@@ -12,11 +12,12 @@ $dbname = 'eoulrim_db';
 $conn = mysqli_connect($host, $user, $pass, $dbname);
 
 
-if (isset($_POST['idx']) && isset($_POST['post_content'])) {
+if (isset($_POST['idx']) && isset($_POST['title']) && isset($_POST['post_content'])) {
     $idx = (int)$_POST['idx'];
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
     $post_content = mysqli_real_escape_string($conn, $_POST['post_content']);
 
-    $sql = "UPDATE team_board SET post = '$post_content' WHERE idx = $idx";
+    $sql = "UPDATE team_board SET title = '$title', post = '$post_content' WHERE idx = $idx";
 
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert('게시글이 성공적으로 수정되었습니다.'); location.href='board.php';</script>";

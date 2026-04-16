@@ -107,27 +107,38 @@ $userId = $_SESSION['userid'];
                                 <th style="width: 20%;">Author</th>
                                 <th style="width: 20%;">Actions</th>
                             </tr>
-                        </thead>
-                       <tbody>
-                    <?php
-                     if ($result && mysqli_num_rows($result) > 0) {
-                     while($row = mysqli_fetch_assoc($result)) {
-                      ?>
-                      <tr>
-                           <td class="text-start ps-3"><?php echo $row['idx']; ?>. <?php echo htmlspecialchars($row['post']); ?></td>
-                           <td><?php echo htmlspecialchars($row['author']); ?></td>
-                         <td>
-                           <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
-                           <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
-                        </td>
-                    </tr>
-                    <?php
-                        } 
-                    } else {
-                        echo "<tr><td colspan='3' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
-                    }
-                    ?>
-                 </tbody>
+                         <thead class="table-light">
+                        <tr>
+                            <th style="width: 50%;">Post (제목/내용)</th>
+                            <th style="width: 15%;">Author</th>
+                            <th style="width: 20%;">Date</th>
+                            <th style="width: 15%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                                <tr>
+                                    <td class="text-start ps-3">
+                                        <strong><?php echo $row['idx']; ?>. <?php echo htmlspecialchars($row['title']); ?></strong><br>
+                                        <span class="text-muted" style="font-size: 0.9em;"><?php echo htmlspecialchars($row['post']); ?></span>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($row['author']); ?></td>
+                                    <td><?php echo substr($row['reg_date'], 0, 10); ?></td>
+                                    <td>
+                                        <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -154,15 +165,20 @@ $userId = $_SESSION['userid'];
             </div>
             <form action="write_process.php" method="POST">
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Post Content (내용)</label>
-                        <input type="text" name="post_content" class="form-control" placeholder="게시글 내용을 입력하세요" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Author (작성자)</label>
-                        <input type="text" name="author" class="form-control" value="<?php echo htmlspecialchars($userId); ?>" readonly>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Title (제목)</label>
+                    <input type="text" name="title" class="form-control" placeholder="게시글 제목을 입력하세요" required>
                 </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Post Content (내용)</label>
+                    <textarea name="post_content" class="form-control" rows="3" placeholder="게시글 내용을 입력하세요" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Author (작성자)</label>
+                    <input type="text" name="author" class="form-control" value="<?php echo htmlspecialchars($userId); ?>" readonly>
+                </div>
+            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     <button type="submit" class="btn btn-primary">등록하기</button>

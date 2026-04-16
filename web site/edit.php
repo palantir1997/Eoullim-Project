@@ -40,8 +40,12 @@ $userId = $_SESSION['userid'];
                 <input type="hidden" name="idx" value="<?php echo $idx; ?>">
                 
                 <div class="mb-3">
+                    <label class="form-label fw-bold">Title (제목)</label>
+                    <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($row['title']); ?>" required>
+                </div>
+                <div class="mb-3">
                     <label class="form-label fw-bold">Post Content (내용)</label>
-                    <input type="text" name="post_content" class="form-control" value="<?php echo htmlspecialchars($row['post']); ?>" required>
+                    <textarea name="post_content" class="form-control" rows="3" required><?php echo htmlspecialchars($row['post']); ?></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="form-label fw-bold">Author (작성자)</label>
