@@ -19,6 +19,7 @@ $userId = $_SESSION['userid'];
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+
 <style>
 body { background-color: #f8f9fc; }
 .sidebar { min-height: 100vh; background-color: #1c2331; }
@@ -67,7 +68,7 @@ body { background-color: #f8f9fc; }
 <body class="d-flex">
 
 <!-- 사이드바 -->
-<div class="sidebar d-flex flex-column flex-shrink-0" style="width:250px;">
+<!-- <div class="sidebar d-flex flex-column flex-shrink-0" style="width:250px;">
     <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
         <i class="fas fa-shield-alt me-2"></i>Aulim Security
     </a>
@@ -78,6 +79,41 @@ body { background-color: #f8f9fc; }
         <li><a href="web_access_monitor.php" class="nav-link">Web Monitor</a></li>
         <li><a href="security_logs.php" class="nav-link">Security Logs</a></li>
         <li><a href="communication.php" class="nav-link active">Team Communication</a></li>
+    </ul>
+
+    
+</div> -->
+
+    <div class="sidebar d-flex flex-column flex-shrink-0" style="width: 250px;">
+    <a href="index.php" class="navbar-brand border-bottom border-secondary mb-3">
+        <i class="fas fa-shield-alt me-2"></i>Aulim Security
+    </a>
+    <ul class="nav flex-column mb-auto">
+        <li>
+            <a href="board.php" class="nav-link">
+                <i class="fas fa-fw fa-table me-2"></i> Team Board
+            </a>
+        </li>
+        <li>
+            <a href="index.php" class="nav-link">
+                <i class="fas fa-fw fa-tachometer-alt me-2"></i> Admin Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="web_access_monitor.php" class="nav-link">
+                <i class="fas fa-fw fa-terminal me-2"></i> Web Monitor
+            </a>
+        </li>
+        <li>
+            <a href="security_logs.php" class="nav-link">
+                <i class="fas fa-fw fa-user-shield me-2"></i> Security Logs
+            </a>
+        </li>
+        <li>
+            <a href="communication.php" class="nav-link active">
+                <i class="fas fa-fw fa-comments me-2"></i> Team Communication
+            </a>
+        </li>
     </ul>
 </div>
 
