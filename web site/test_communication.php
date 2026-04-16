@@ -159,7 +159,9 @@ async function loadMessages() {
             chatBox.appendChild(bubble);
         });
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+        setTimeout(() => {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 100);
 
     } catch (err) {
         console.error(err);

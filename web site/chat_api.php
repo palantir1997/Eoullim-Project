@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $messages[] = $newMessage;
 
-    file_put_contents($chatFile, json_encode($messages));
+    file_put_contents($chatFile, json_encode($messages, JSON_UNESCAPED_UNICODE));
 
     echo json_encode(['success' => true]);
 
