@@ -150,7 +150,7 @@ $userId = $_SESSION['userid'];
                         <h5 class="modal-title" id="newPostModalLabel">새 게시글 작성</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="write_process.php" method="POST">
+                    <form action="write_process.php" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Title (제목)</label>
