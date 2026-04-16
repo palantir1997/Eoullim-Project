@@ -3,9 +3,7 @@
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다.
 실시간 탐지 및 자동 대응이 가능한 안정적인 서비스 운영 환경을 구축합니다.
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/64006963-874c-4541-acc0-efc64becd5b2" width="100%" title="WBS Project Plan" alt="WBS Project Plan">
-</p>
+
 ---
 
 ## 프로젝트 개요
@@ -234,6 +232,10 @@ sudo firewall-cmd --permanent --add-port=514/udp
 ## 웹 애플리케이션 아키텍처
 
 ### 웹 로직 흐름
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/64006963-874c-4541-acc0-efc64becd5b2" width="100%" title="WBS Project Plan" alt="WBS Project Plan">
+</p>
 
 ```
 사용자 입장
