@@ -1,5 +1,9 @@
 # Aulim Security - 웹 서비스 기업 대상 통합 보안 솔루션
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d84ea5b3-2a3d-47fc-a442-aa6b625f8feb" width="100%">
+</p>
+
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다.
 실시간 탐지 및 자동 대응이 가능한 안정적인 서비스 운영 환경을 구축합니다.
 
@@ -95,11 +99,6 @@
 ## 시스템 아키텍처
 
 ### 네트워크 구성도
-
-<h3 align="center">🖥️ Infrastructure & Server Architecture</h3>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/d84ea5b3-2a3d-47fc-a442-aa6b625f8feb" width="100%">
-</p>
 
 ```
 Region_A (DB Master & Primary Collector)
