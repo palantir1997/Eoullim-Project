@@ -34,6 +34,7 @@ $userId = $_SESSION['userid'];
             font-size: 0.9rem;
             line-height: 1.6;
             white-space: pre-wrap;
+            word-break: break-all;
         }
     </style>
 </head>
