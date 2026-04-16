@@ -6,7 +6,6 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/64006963-874c-4541-acc0-efc64becd5b2" width="100%" title="WBS Project Plan" alt="WBS Project Plan">
 </p>
-
 ---
 
 ## 프로젝트 개요
