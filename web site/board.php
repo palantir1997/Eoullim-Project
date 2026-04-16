@@ -100,54 +100,62 @@ $userId = $_SESSION['userid'];
                     <button class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i> New Post</button>
                 </div>
                 <div class="card-body">
-                 <table class="table table-bordered table-hover text-center align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 10%;">No. (번호)</th>
-                        <th style="width: 40%;">Post (제목)</th>
-                        <th style="width: 15%;">Author</th>
-                        <th style="width: 20%;">Date (등록일시)</th>
-                        <th style="width: 15%;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($result && mysqli_num_rows($result) > 0) {
-                        $num = mysqli_num_rows($result);
+                <table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 10%;">No. (번호)</th>
+            <th style="width: 35%;">Post (제목)</th>
+            <th style="width: 10%;">File</th>
+            <th style="width: 15%;">Author</th>
+            <th style="width: 15%;">Date (등록일시)</th>
+            <th style="width: 15%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result && mysqli_num_rows($result) > 0) {
+            $num = mysqli_num_rows($result);
+            while($row = mysqli_fetch_assoc($result)) {
+        ?>
+                <tr>
+                    <td><?php echo $num--; ?></td>
+                    
+                    <td class="text-start ps-3">
+                        <a href="view.php?idx=<?php echo $row['idx']; ?>" class="text-decoration-none text-dark fw-bold">
+                            <?php echo htmlspecialchars($row['title']); ?>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <?php if (!empty($row['file_name'])) { ?>
+                            <i class="fas fa-paperclip text-secondary"></i>
+                        <?php } ?>
+                    </td>
 
-                        while($row = mysqli_fetch_assoc($result)) {
+                    <td><?php echo htmlspecialchars($row['author']); ?></td>
+                    <td><?php echo $row['reg_date']; ?></td>
+                    <td>
+                    <?php 
+                    if ($_SESSION['userid'] === $row['author']) { 
                     ?>
-                            <tr>
-                                <td><?php echo $num--; ?></td>
-                                
-                                <td class="text-start ps-3">
-                                    <a href="view.php?idx=<?php echo $row['idx']; ?>" class="text-decoration-none text-dark fw-bold">
-                                        <?php echo htmlspecialchars($row['title']); ?>
-                                    </a>
-                                </td>
-                                <td><?php echo htmlspecialchars($row['author']); ?></td>
-                                <td><?php echo $row['reg_date']; ?></td>
-                                <td>
-                                <?php 
-                                if ($_SESSION['userid'] === $row['author']) { 
-                                ?>
-                                    <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                    <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
-                                <?php 
-                                } else {
-                                    echo "<span class='text-muted' style='font-size:0.8em;'>권한없음</span>";
-                                }
-                                ?>
-                            </td>
-                            </tr>
-                            <?php
-                                }
-                            } else {
-                                echo "<tr><td colspan='5' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>  
+                        <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
+                    <?php 
+                    } else {
+                        echo "<span class='text-muted' style='font-size:0.8em;'>권한없음</span>";
+                    }
+                    ?>
+                    </td>
+                </tr>
+        <?php
+            }
+        } else {
+            // 칸이 6개로 늘었으므로 colspan='6'으로 변경
+            echo "<tr><td colspan='6' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
                         </div>
                     </div>
                 </div>
