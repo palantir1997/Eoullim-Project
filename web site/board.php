@@ -6,7 +6,17 @@ if (!isset($_SESSION['userid'])) {
         location.href = 'login.php';
     </script>";
     exit;
-}
+} 
+
+$host = '100.64.27.39';
+$user = 'jaewon'; 
+$pass = 'jaewon'; 
+$dbname = 'eoulrim_db'; 
+
+$conn = mysqli_connect($host, $user, $pass, $dbname); 
+$sql = "SELECT * FROM team_board ORDER BY idx DESC"; 
+$result = mysqli_query($conn, $sql);
+
 $userId = $_SESSION['userid'];
 ?>
 <!DOCTYPE html>
@@ -98,32 +108,26 @@ $userId = $_SESSION['userid'];
                                 <th style="width: 20%;">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-start ps-3">1. 4/13 Security Notice</td>
-                                <td>Admin</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Del</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-3">2. Branch VPN Guide</td>
-                                <td>Tech Team</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Del</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-3">3. [Upload] Weekly Report</td>
-                                <td>사용자</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Del</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                       <tbody>
+                    <?php
+                     if ($result && mysqli_num_rows($result) > 0) {
+                     while($row = mysqli_fetch_assoc($result)) {
+                      ?>
+                      <tr>
+                           <td class="text-start ps-3"><?php echo $row['idx']; ?>. <?php echo htmlspecialchars($row['post']); ?></td>
+                           <td><?php echo htmlspecialchars($row['author']); ?></td>
+                         <td>
+                           <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
+                           <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">Del</a>
+                        </td>
+                    </tr>
+                    <?php
+                        } 
+                    } else {
+                        echo "<tr><td colspan='3' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>";
+                    }
+                    ?>
+                 </tbody>
                     </table>
                 </div>
             </div>
