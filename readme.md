@@ -4,7 +4,7 @@
   <img src="https://github.com/user-attachments/assets/d84ea5b3-2a3d-47fc-a442-aa6b625f8feb" width="100%">
 </p>
 
-웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다.
+웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다. <br>
 실시간 탐지 및 자동 대응이 가능한 안정적인 서비스 운영 환경을 구축합니다.
 
 
@@ -99,6 +99,9 @@
 ## 시스템 아키텍처
 
 ### 네트워크 구성도
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/44641a93-8545-4944-9196-d9d664f09e05" width="100%">
+</p>
 
 ```
 Region_A (DB Master & Primary Collector)
