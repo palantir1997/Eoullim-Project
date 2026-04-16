@@ -66,7 +66,7 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
         <div class="container-fluid px-4">
             <div class="card shadow-sm border-0">
                 <div class="card-header py-3 bg-dark d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 fw-bold text-white"><i class="fas fa-terminal me-2"></i>Apache Access Logs (Tail -15)</h6>
+                    <h6 class="m-0 fw-bold text-white"><i class="fas fa-terminal me-2"></i>Apache Access Logs (Live)</h6>
                     <span class="badge bg-success">LIVE UPDATING</span>
                 </div>
                 <div class="card-body p-0">
