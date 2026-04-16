@@ -33,6 +33,7 @@ $userId = $_SESSION['userid'];
     <meta charset="UTF-8">
     <title>게시글 수정</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="card shadow-sm w-100" style="max-width: 500px;">
@@ -40,7 +41,7 @@ $userId = $_SESSION['userid'];
             <h5 class="m-0 fw-bold text-primary">게시글 수정</h5>
         </div>
         <div class="card-body p-4">
-            <form action="edit_process.php" method="POST">
+            <form action="edit_process.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="idx" value="<?php echo $idx; ?>">
                 
                 <div class="mb-3">
@@ -51,10 +52,26 @@ $userId = $_SESSION['userid'];
                     <label class="form-label fw-bold">Post Content (내용)</label>
                     <textarea name="post_content" class="form-control" rows="3" required><?php echo htmlspecialchars($row['post']); ?></textarea>
                 </div>
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-bold">Author (작성자)</label>
                     <input type="text" class="form-control" value="<?php echo htmlspecialchars($row['author']); ?>" readonly>
                 </div>
+
+                <div class="mb-4 border-top pt-3 mt-3">
+                    <label class="form-label fw-bold text-primary">첨부 파일 수정</label>
+                    
+                    <?php if (!empty($row['file_name'])) { ?>
+                        <div class="mb-2 text-secondary">
+                            <i class="fas fa-save me-1"></i> 현재 파일: <strong><?php echo htmlspecialchars($row['file_name']); ?></strong>
+                        </div>
+                        <div class="form-text mb-2 text-danger" style="font-size: 0.8em;">※ 새로운 파일을 선택하면 기존 파일이 덮어씌워집니다. 유지하시려면 선택하지 마세요.</div>
+                    <?php } else { ?>
+                        <div class="form-text mb-2" style="font-size: 0.8em;">현재 등록된 파일이 없습니다. 새로 추가할 수 있습니다.</div>
+                    <?php } ?>
+                    
+                    <input type="file" name="upload_file" class="form-control">
+                </div>
+
                 <div class="d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
                     <button type="submit" class="btn btn-primary">수정완료</button>
