@@ -1,24 +1,20 @@
 <?php
 session_start();
 
-include 'db.php'; 
+$host = '100.64.27.39';
+$user = 'jaewon'; 
+$pass = 'jaewon'; 
+$dbname = 'eoulrim_db'; 
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+$conn = mysqli_connect($host, $user, $pass, $dbname); 
 
-if (!isset($_SESSION['userid'])) {
-    echo "<script>alert('접근 권한이 없습니다.'); location.href='login.php';</script>";
-    exit;
+if (!$conn) {
+    die("DB 서버 연결 실패: " . mysqli_connect_error());
 }
 
-if (!isset($conn)) {
-    if (isset($db)) {
-        $conn = $db;
-    } elseif (isset($mysqli)) {
-        $conn = $mysqli;
-    } else {
-        die("에러: db.php에서 DB 연결 변수를 찾을 수 없습니다.");
-    }
+if (!isset($_SESSION['userid'])) {
+    echo "<script>alert('로그인이 필요한 서비스입니다.'); location.href='login.php';</script>";
+    exit;
 }
 
 if (isset($_POST['post_content']) && isset($_POST['author'])) {
@@ -34,10 +30,10 @@ if (isset($_POST['post_content']) && isset($_POST['author'])) {
             location.href = 'board.php';
         </script>";
     } else {
-        echo "Query Error: " . mysqli_error($conn);
+        echo "데이터 저장 에러: " . mysqli_error($conn);
     }
 } else {
-    echo "<script>alert('데이터가 누락되었습니다.'); history.back();</script>";
+    echo "<script>alert('정상적인 접근이 아닙니다.'); location.href='board.php';</script>";
 }
 
 mysqli_close($conn);
