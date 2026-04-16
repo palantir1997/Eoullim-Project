@@ -8,7 +8,7 @@ if (!isset($_SESSION['userid'])) {
     exit;
 }
 $userId = $_SESSION['userid'];
-?>
+?> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -115,5 +115,90 @@ $userId = $_SESSION['userid'];
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const chatBox = document.querySelector('.chat-box');
+        const input = document.querySelector('.input-group input');
+        const button = document.querySelector('.input-group button');
+
+        const ROOM = "eoullim"; // 채널 이름 (leader-pane 용)
+        let lastMessageId = null;
+
+        // ========================
+        // 메시지 불러오기
+        // ========================
+        async function loadMessages() {
+            try {
+                const res = await fetch(`chat_api.php?room=${ROOM}`);
+                const data = await res.json();
+
+                if (!data.success) return;
+
+                chatBox.innerHTML = '';
+
+                data.messages.forEach(msg => {
+                    const isMe = msg.userId === data.currentUser;
+
+                    const sender = document.createElement('div');
+                    sender.className = 'chat-sender ' + (isMe ? 'me me-1 mt-3' : 'ms-1 mt-2');
+                    sender.innerText = isMe ? 'Me (' + msg.userId + ')' : msg.userId;
+
+                    const bubble = document.createElement('div');
+                    bubble.className = 'chat-bubble ' + (isMe ? 'me' : 'other');
+                    bubble.innerText = msg.message;
+
+                    chatBox.appendChild(sender);
+                    chatBox.appendChild(bubble);
+                });
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ========================
+        // 메시지 보내기
+        // ========================
+        async function sendMessage() {
+            const message = input.value.trim();
+            if (!message) return;
+
+            const formData = new FormData();
+            formData.append('message', message);
+
+            try {
+                await fetch(`chat_api.php?room=${ROOM}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                input.value = '';
+                loadMessages(); // 보내고 바로 갱신
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ========================
+        // 이벤트
+        // ========================
+        button.addEventListener('click', sendMessage);
+
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // ========================
+        // 자동 새로고침 (실시간처럼)
+        // ========================
+        setInterval(loadMessages, 2000);
+
+        // 최초 실행
+        loadMessages();
+</script>
 </body>
 </html>
