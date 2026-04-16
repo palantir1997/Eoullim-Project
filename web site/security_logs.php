@@ -33,8 +33,26 @@ $userId = $_SESSION['userid'];
             border-radius: 5px;
             font-size: 0.9rem;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-all;
+            white-space: normal;
+        }
+        .log-item {
+            font-weight: 400;
+        }
+
+        .log-item .text-secondary {
+            color: #888 !important;
+        }
+
+        .log-item .text-info {
+            color: #0dcaf0 !important;
+        }
+
+        #log-display::-webkit-scrollbar {
+            width: 8px;
+        }
+        #log-display::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
         }
     </style>
 </head>
