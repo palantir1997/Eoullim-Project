@@ -2,7 +2,7 @@
 $logPath = '/var/log/httpd/access_log';
 
 if (file_exists($logPath)) {
-    $output = shell_exec("tail -n 20 " . escapeshellarg($logPath));
+    $output = shell_exec("tail -n 15 " . escapeshellarg($logPath));
     if (!$output) {
         echo "로그 파일이 비어있거나 읽을 수 없습니다.";
         exit;
