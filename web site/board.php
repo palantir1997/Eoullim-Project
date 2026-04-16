@@ -139,16 +139,6 @@ $userId = $_SESSION['userid'];
                         <?php } } else { echo "<tr><td colspan='6' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>"; } ?>
                     </tbody>
                 </table>
-
-                    <form action="write_process.php" method="POST" enctype="multipart/form-data">
-                        <div class="mb-3 border-top pt-3 mt-3">
-                            <label class="form-label fw-bold text-primary">첨부 파일 (선택)</label>
-                            <input type="file" name="upload_file" class="form-control">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">등록하기</button>
-                        </div>
-                    </form>
                         </div>
                     </div>
                 </div>
