@@ -125,7 +125,8 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const pageId = document.title.split(' - ')[1] || "Admin Dashboard";
+        const urlPath = window.location.pathname.split("/").pop();
+        const pageId = (urlPath === "" || urlPath === "index.php") ? "Admin Dashboard" : urlPath;
 
         window.addEventListener('beforeunload', function (e) {
             const formData = new FormData();
