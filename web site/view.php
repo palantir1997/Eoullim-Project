@@ -11,6 +11,8 @@ $pass = 'jaewon';
 $dbname = 'eoulrim_db'; 
 $conn = mysqli_connect($host, $user, $pass, $dbname);
 
+mysqli_set_charset($conn, "utf8mb4");
+
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
 mysqli_query($conn, "UPDATE team_board SET views = views + 1 WHERE idx = $idx");

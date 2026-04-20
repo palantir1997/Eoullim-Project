@@ -7,6 +7,8 @@ if (!isset($_SESSION['userid'])) {
 
 $conn = mysqli_connect('100.64.27.39', 'jaewon', 'jaewon', 'eoulrim_db');
 
+mysqli_set_charset($conn, "utf8mb4");
+
 if (isset($_POST['title'])) {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $post_content = mysqli_real_escape_string($conn, $_POST['post_content']);
