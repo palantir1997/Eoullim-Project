@@ -1,5 +1,6 @@
 <?php
 session_start();
+// 로그인 상태 확인
 $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 ?>
 <!DOCTYPE html>
@@ -18,7 +19,6 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
         .sidebar .navbar-brand { color: #fff; font-weight: bold; padding: 1.5rem 1rem; text-align: center; display: block; text-decoration: none; }
         .content-wrapper { flex: 1; display: flex; flex-direction: column; }
         .topbar { background-color: #fff; box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15); }
-        /* 실시간 상태 표시를 위한 스타일 */
         .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background-color: #1cc88a; margin-right: 5px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
@@ -88,50 +88,6 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
                 </div>
             </div>
 
-            <div class="card shadow-sm mb-4 border-0">
-                <div class="card-header py-3 bg-dark text-start">
-                    <h6 class="m-0 fw-bold text-white"><i class="fas fa-users me-2"></i>Active Session Info</h6>
-                </div>
-                <div class="card-body p-0">
-                    <table class="table table-hover table-striped border-0 mb-0">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th>Headers</th>
-                                <th>Values</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold px-4">접속 유저</td>
-                                <td><?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?></td>
-                                <td class="text-center"><span class="badge <?php echo $userId ? 'bg-success' : 'bg-secondary'; ?>"><?php echo $userId ? 'Logged In' : 'Guest'; ?></span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold px-4">접속 IP</td>
-                                <td><?php echo htmlspecialchars($_SERVER['REMOTE_ADDR']); ?></td>
-                                <td class="text-center"><span class="badge bg-info">Connected</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold px-4">서버 호스트명</td>
-                                <td><?php echo htmlspecialchars(gethostname()); ?></td>
-                                <td class="text-center"><span class="badge bg-success">OK</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold px-4">접속 시각</td>
-                                <td><?php echo date('Y-m-d H:i:s'); ?></td>
-                                <td class="text-center"><span class="badge bg-primary">Now</span></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold px-4">브라우저</td>
-                                <td><?php echo htmlspecialchars(substr($_SERVER['HTTP_USER_AGENT'], 0, 50)) . '...'; ?></td>
-                                <td class="text-center"><span class="badge bg-warning text-dark">Client</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <div class="card shadow-sm mb-4 border-0 border-start border-primary border-5">
                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                     <h6 class="m-0 fw-bold text-primary"><i class="fas fa-broadcast-tower me-2"></i>Live Team Sessions (Real-time)</h6>
@@ -153,23 +109,23 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 현재 페이지 식별값
         const pageId = "Admin Dashboard";
 
-        // 실시간 접속 정보를 업데이트하는 함수
         async function updateLiveStatus() {
             try {
                 const formData = new FormData();
                 formData.append('page', pageId);
 
-                // heartbeat.php 파일이 서버에 있어야 정상 작동합니다.
+                // 분리된 heartbeat.php 파일에서 데이터만 가져옵니다.
                 const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
                 const result = await response.json();
 
                 if (result.success) {
@@ -196,7 +152,7 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
             }
         }
 
-        // 5초마다 데이터 갱신
+        // 5초 간격 갱신
         setInterval(updateLiveStatus, 5000);
         updateLiveStatus();
     </script>

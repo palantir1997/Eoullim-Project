@@ -15,9 +15,9 @@ if (file_exists($dataFile)) {
     $allData = json_decode($content, true) ?: [];
 }
 
-// 중요: 기존 파일이 순수 배열(채팅 전용)이었다면 객체로 강제 변환
+// 기존 채팅 데이터와 섞이지 않도록 구조 강제 변환
 if (!is_array($allData) || (isset($allData[0]) && !isset($allData['online_users']))) {
-    $tempMessages = $allData; // 기존 채팅 메시지 백업
+    $tempMessages = $allData;
     $allData = ['messages' => $tempMessages, 'online_users' => []];
 }
 
@@ -25,7 +25,7 @@ if (!isset($allData['online_users'])) {
     $allData['online_users'] = [];
 }
 
-// 유저 정보 갱신
+// 현재 접속 정보 갱신
 $allData['online_users'][$userId] = [
     'id' => $userId,
     'page' => $currentPage,
@@ -33,7 +33,7 @@ $allData['online_users'][$userId] = [
     'last_seen' => $now
 ];
 
-// 만료된 세션 정리
+// 30초 이상 무응답 유저 삭제
 foreach ($allData['online_users'] as $id => $info) {
     if ($now - $info['last_seen'] > 30) {
         unset($allData['online_users'][$id]);
@@ -42,7 +42,9 @@ foreach ($allData['online_users'] as $id => $info) {
 
 file_put_contents($dataFile, json_encode($allData), LOCK_EX);
 
+// 중요: 여기서는 오직 JSON만 출력해야 합니다.
 echo json_encode([
     'success' => true, 
     'onlineUsers' => array_values($allData['online_users'])
 ]);
+exit; // 이후에 다른 내용이 출력되지 않도록 종료
