@@ -242,8 +242,16 @@ window.addEventListener('beforeunload', function (e) {
     navigator.sendBeacon('heartbeat.php', formData);
 });
 
+window.addEventListener('beforeunload', function (e) {
+    const formData = new FormData();
+    formData.append('action', 'logout'); 
+    navigator.sendBeacon('heartbeat.php', formData);
+});
+
 setInterval(loadMessages, 5000);
 loadMessages();
+setInterval(updateLiveStatus, 5000);
+updateLiveStatus();
 </script>
 </body>
 </html>
