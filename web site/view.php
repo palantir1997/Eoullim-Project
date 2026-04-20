@@ -66,7 +66,7 @@ if(!$row) {
             </div>
             <div class="card-body p-4">
                 
-               <?php
+                <?php
                 $comment_sql = "SELECT * FROM board_comments WHERE board_idx = $idx ORDER BY IFNULL(parent_idx, idx) ASC, idx ASC";
                 $comment_result = mysqli_query($conn, $comment_sql);
                 
@@ -126,7 +126,7 @@ if(!$row) {
                 <?php
                     }
                 } else {
-                    echo "<p class='text-muted small mb-4'>등록된 댓글이 없습니다.</p>";
+                    echo "<p class='text-muted small mb-4'>등록된 댓글이 없습니다. 첫 번째 댓글을 남겨보세요!</p>";
                 }
                 ?>
                 
@@ -141,25 +141,10 @@ if(!$row) {
                         <input type="file" name="comment_image" class="form-control form-control-sm w-50" accept="image/*">
                     </div>
                 </form>
-                            <?php } ?>
-                        </div>
-                <?php
-                    }
-                } else {
-                    echo "<p class='text-muted small mb-4'>등록된 댓글이 없습니다. 첫 번째 댓글을 남겨보세요!</p>";
-                }
-                ?>
-                
-                <form action="comment_process.php" method="POST" class="mt-2">
-                    <input type="hidden" name="board_idx" value="<?php echo $idx; ?>">
-                    <div class="input-group">
-                        <textarea name="content" class="form-control" rows="2" placeholder="댓글을 남겨보세요..." required></textarea>
-                        <button type="submit" class="btn btn-primary px-4">등록</button>
-                    </div>
-                </form>
                 
             </div>
         </div>
-        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
