@@ -98,7 +98,9 @@ if(!$row) {
                                     <i class="fas fa-heart"></i> 좋아요 <?php echo $c_row['likes']; ?>
                                 </a>
 
-                                <?php if ($_SESSION['userid'] === $c_row['author']) { ?>
+                               <?php 
+                                if (trim(strtolower($_SESSION['userid'])) === trim(strtolower($c_row['author']))) { 
+                                ?>
                                     <a href="comment_delete.php?comment_idx=<?php echo $c_row['idx']; ?>&board_idx=<?php echo $idx; ?>" class="btn btn-sm btn-outline-secondary p-1" style="font-size: 0.75em;" onclick="return confirm('댓글을 삭제하시겠습니까?');">
                                         <i class="fas fa-trash-alt"></i> 삭제
                                     </a>
