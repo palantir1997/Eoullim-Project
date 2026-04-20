@@ -9,18 +9,23 @@ $currentPage = isset($_POST['page']) ? $_POST['page'] : 'Unknown';
 $userIp = $_SERVER['REMOTE_ADDR'];
 $now = time();
 
-// 1. 파일 읽기 (없으면 빈 배열 생성)
 $allData = [];
 if (file_exists($dataFile)) {
-    $allData = json_decode(file_get_contents($dataFile), true) ?: [];
+    $content = file_get_contents($dataFile);
+    $allData = json_decode($content, true) ?: [];
 }
 
-// 2. 'online_users' 섹션이 없으면 새로 만들기
+// 중요: 기존 파일이 순수 배열(채팅 전용)이었다면 객체로 강제 변환
+if (!is_array($allData) || (isset($allData[0]) && !isset($allData['online_users']))) {
+    $tempMessages = $allData; // 기존 채팅 메시지 백업
+    $allData = ['messages' => $tempMessages, 'online_users' => []];
+}
+
 if (!isset($allData['online_users'])) {
     $allData['online_users'] = [];
 }
 
-// 3. 현재 유저 정보 업데이트
+// 유저 정보 갱신
 $allData['online_users'][$userId] = [
     'id' => $userId,
     'page' => $currentPage,
@@ -28,17 +33,15 @@ $allData['online_users'][$userId] = [
     'last_seen' => $now
 ];
 
-// 4. 30초 넘게 반응 없는 유저 정리
+// 만료된 세션 정리
 foreach ($allData['online_users'] as $id => $info) {
     if ($now - $info['last_seen'] > 30) {
         unset($allData['online_users'][$id]);
     }
 }
 
-// 5. 파일에 저장 (LOCK_EX로 데이터 꼬임 방지)
 file_put_contents($dataFile, json_encode($allData), LOCK_EX);
 
-// 6. 결과 반환
 echo json_encode([
     'success' => true, 
     'onlineUsers' => array_values($allData['online_users'])
