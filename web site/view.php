@@ -66,7 +66,7 @@ if(!$row) {
             </div>
             <div class="card-body p-4">
                 
-                <?php
+               <?php
                 $comment_sql = "SELECT * FROM board_comments WHERE board_idx = $idx ORDER BY IFNULL(parent_idx, idx) ASC, idx ASC";
                 $comment_result = mysqli_query($conn, $comment_sql);
                 
@@ -82,22 +82,65 @@ if(!$row) {
                                 </div>
                                 <span class="text-muted" style="font-size: 0.8em;"><?php echo $c_row['reg_date']; ?></span>
                             </div>
+                            
                             <div style="font-size: 0.95em;" class="mb-2">
                                 <?php echo nl2br(htmlspecialchars($c_row['content'])); ?>
                             </div>
+
+                            <?php if (!empty($c_row['image_file'])) { ?>
+                                <div class="mb-2">
+                                    <img src="uploads/<?php echo urlencode($c_row['image_file']); ?>" alt="첨부이미지" style="max-width: 200px; border-radius: 8px;">
+                                </div>
+                            <?php } ?>
                             
+                            <div class="d-flex gap-2 align-items-center mt-2">
+                                <a href="comment_like.php?comment_idx=<?php echo $c_row['idx']; ?>&board_idx=<?php echo $idx; ?>" class="btn btn-sm btn-outline-danger p-1" style="font-size: 0.75em;">
+                                    <i class="fas fa-heart"></i> 좋아요 <?php echo $c_row['likes']; ?>
+                                </a>
+
+                                <?php if ($_SESSION['userid'] === $c_row['author']) { ?>
+                                    <a href="comment_delete.php?comment_idx=<?php echo $c_row['idx']; ?>&board_idx=<?php echo $idx; ?>" class="btn btn-sm btn-outline-secondary p-1" style="font-size: 0.75em;" onclick="return confirm('댓글을 삭제하시겠습니까?');">
+                                        <i class="fas fa-trash-alt"></i> 삭제
+                                    </a>
+                                <?php } ?>
+
+                                <?php if (!$is_reply) { ?>
+                                    <button class="btn btn-sm btn-light text-secondary p-1" style="font-size: 0.75em;" onclick="document.getElementById('reply_<?php echo $c_row['idx']; ?>').classList.toggle('d-none')">
+                                        <i class="fas fa-comment-dots"></i> 답글
+                                    </button>
+                                <?php } ?>
+                            </div>
+
                             <?php if (!$is_reply) { ?>
-                                <button class="btn btn-sm btn-light text-secondary p-1" style="font-size: 0.8em;" 
-                                        onclick="document.getElementById('reply_<?php echo $c_row['idx']; ?>').classList.toggle('d-none')">
-                                    <i class="fas fa-comment-dots"></i> 
-                                </button>
-                                
-                                <form action="comment_process.php" method="POST" id="reply_<?php echo $c_row['idx']; ?>" class="mt-2 d-none d-flex gap-2">
+                                <form action="comment_process.php" method="POST" enctype="multipart/form-data" id="reply_<?php echo $c_row['idx']; ?>" class="mt-2 d-none">
                                     <input type="hidden" name="board_idx" value="<?php echo $idx; ?>">
                                     <input type="hidden" name="parent_idx" value="<?php echo $c_row['idx']; ?>">
-                                    <input type="text" name="content" class="form-control form-control-sm" placeholder="답글을 입력하세요..." required>
-                                    <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+                                    <div class="input-group mb-1">
+                                        <input type="text" name="content" class="form-control form-control-sm" placeholder="답글을 입력하세요..." required>
+                                        <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+                                    </div>
+                                    <input type="file" name="comment_image" class="form-control form-control-sm w-50" accept="image/*">
                                 </form>
+                            <?php } ?>
+                        </div>
+                <?php
+                    }
+                } else {
+                    echo "<p class='text-muted small mb-4'>등록된 댓글이 없습니다.</p>";
+                }
+                ?>
+                
+                <form action="comment_process.php" method="POST" enctype="multipart/form-data" class="mt-3 border-top pt-3">
+                    <input type="hidden" name="board_idx" value="<?php echo $idx; ?>">
+                    <div class="input-group mb-2">
+                        <textarea name="content" class="form-control" rows="2" placeholder="댓글을 남겨보세요..." required></textarea>
+                        <button type="submit" class="btn btn-primary px-4">등록</button>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-image text-secondary me-2"></i>
+                        <input type="file" name="comment_image" class="form-control form-control-sm w-50" accept="image/*">
+                    </div>
+                </form>
                             <?php } ?>
                         </div>
                 <?php
