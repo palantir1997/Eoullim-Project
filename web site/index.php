@@ -92,10 +92,11 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
                             <tr><th>Headers</th><th>Values</th><th>Status</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td class="fw-bold px-4">접속 유저</td><td><?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?></td><td class="text-center"><span class="badge <?php echo $userId ? 'bg-success' : 'bg-secondary'; ?>"><?php echo $userId ? 'Logged In' : 'Guest'; ?></span></td></tr>
+                            <tr><td class="fw-bold px-4">접속 유저</td><td><?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?></td><td class="text-center"><span class="badge <?php echo $userId ? 'bg-secondary' : 'bg-secondary'; ?>"><?php echo $userId ? htmlspecialchars($userId) : 'Guest'; ?></span></td></tr>
                             <tr><td class="fw-bold px-4">접속 IP</td><td><?php echo htmlspecialchars($_SERVER['REMOTE_ADDR']); ?></td><td class="text-center"><span class="badge bg-info">Connected</span></td></tr>
                             <tr><td class="fw-bold px-4">서버 호스트명</td><td><?php echo htmlspecialchars(gethostname()); ?></td><td class="text-center"><span class="badge bg-success">OK</span></td></tr>
                             <tr><td class="fw-bold px-4">접속 시각</td><td><?php echo date('Y-m-d H:i:s'); ?></td><td class="text-center"><span class="badge bg-primary">Now</span></td></tr>
+                            <tr><td class="fw-bold px-4">브라우저</td><td><?php echo htmlspecialchars(substr($_SERVER['HTTP_USER_AGENT'], 0, 50)) . '...'; ?></td><td class="text-center"><span class="badge bg-warning text-dark">Client</span></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -143,7 +144,7 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
                     const countBadge = document.getElementById('onlineCount');
                     
                     countBadge.innerText = `${result.onlineUsers.length}명 접속 중`;
-                    tbody.innerHTML = ''; // 여기 'onlineUserTable' 내부만 비웁니다.
+                    tbody.innerHTML = ''; 
 
                     result.onlineUsers.forEach(user => {
                         const row = `
