@@ -33,6 +33,10 @@ if(!$row) {
     <title>게시글 읽기</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
 <body class="bg-light p-5">
     <div class="container" style="max-width: 800px;">
@@ -86,7 +90,7 @@ if(!$row) {
                             </div>
                             
                             <div style="font-size: 0.95em;" class="mb-2">
-                                <?php echo nl2br(htmlspecialchars($c_row['content'])); ?>
+                                <?php echo $c_row['content']; ?>
                             </div>
 
                             <?php if (!empty($c_row['image_file'])) { ?>
@@ -140,19 +144,36 @@ if(!$row) {
                 
                 <form action="comment_process.php" method="POST" enctype="multipart/form-data" class="mt-3 border-top pt-3">
                     <input type="hidden" name="board_idx" value="<?php echo $idx; ?>">
-                    <div class="input-group mb-2">
-                        <textarea name="content" class="form-control" rows="2" placeholder="댓글을 남겨보세요..." required></textarea>
-                        <button type="submit" class="btn btn-primary px-4">등록</button>
+                    <div class="mb-2">
+                        <textarea id="summernote" name="content" class="form-control" rows="2" placeholder="댓글과 이미지를 편하게 남겨보세요!" required></textarea>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-image text-secondary me-2"></i>
-                        <input type="file" name="comment_image" class="form-control form-control-sm w-50" accept="image/*">
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="d-flex align-items-center w-50">
+                            <i class="fas fa-image text-secondary me-2"></i>
+                            <input type="file" name="comment_image" class="form-control form-control-sm" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary px-4">등록</button>
                     </div>
                 </form>
                 
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 120, // 에디터 높이
+                placeholder: '이곳에 텍스트를 적거나, 이미지를 복사+붙여넣기(Ctrl+V) 해보세요!',
+                toolbar: [
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['insert', ['picture']] // 사진 첨부 아이콘 활성화
+                ]
+            });
+        });
+    </script>
 </body>
 </html>
