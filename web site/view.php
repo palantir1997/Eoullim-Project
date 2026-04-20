@@ -99,7 +99,11 @@ if(!$row) {
                                 </a>
 
                                <?php 
-                                if (trim(strtolower($_SESSION['userid'])) === trim(strtolower($c_row['author']))) { 
+                                $current_user = trim(strtolower($_SESSION['userid']));
+                                $comment_author = trim(strtolower($c_row['author']));
+                                $post_author = trim(strtolower($row['author']));
+
+                                if ($current_user === $comment_author || $current_user === $post_author) { 
                                 ?>
                                     <a href="comment_delete.php?comment_idx=<?php echo $c_row['idx']; ?>&board_idx=<?php echo $idx; ?>" class="btn btn-sm btn-outline-secondary p-1" style="font-size: 0.75em;" onclick="return confirm('댓글을 삭제하시겠습니까?');">
                                         <i class="fas fa-trash-alt"></i> 삭제
