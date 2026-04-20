@@ -1,9 +1,12 @@
 <?php
 session_start();
 if (!isset($_SESSION['userid'])) {
-    echo "<script>alert('권한이 없습니다. 로그인 후 이용해주세요.'); location.href='login.php';</script>";
+    echo "<script>
+        alert('회원만 이용할 수 있습니다. 로그인해주세요!');
+        location.href = 'login.php';
+    </script>";
     exit;
-}
+} 
 $userId = $_SESSION['userid'];
 ?>
 <!DOCTYPE html>
@@ -86,21 +89,50 @@ $userId = $_SESSION['userid'];
     </div>
 
     <script>
-    function refreshLogs() {
-        fetch('fetch_logs.php')
-            .then(response => response.text())
-            .then(data => {
-                const display = document.getElementById('log-display');
-                display.innerHTML = data;
-                display.scrollTop = display.scrollHeight;
-            })
-            .catch(error => {
-                document.getElementById('log-display').innerHTML = "데이터 호출 오류: " + error;
-            });
-    }
+        // --- 1. 기존 로그 업데이트 기능 (기존 로직 유지) ---
+        function refreshLogs() {
+            fetch('fetch_logs.php')
+                .then(response => response.text())
+                .then(data => {
+                    const display = document.getElementById('log-display');
+                    display.innerHTML = data;
+                    display.scrollTop = display.scrollHeight;
+                })
+                .catch(error => {
+                    document.getElementById('log-display').innerHTML = "데이터 호출 오류: " + error;
+                });
+        }
 
-    setInterval(refreshLogs, 5000); 
-    refreshLogs();
+        // --- 2. 실시간 팀 세션 업데이트 (board.php와 동일 구조) ---
+        
+        const pageId = "Security Logs"; 
+
+        async function updateLiveStatus() {
+            try {
+                const formData = new FormData();
+                formData.append('page', pageId);
+
+                const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
+                // 기존 구조와 동일하게 처리
+                const result = await response.json();
+            } catch (error) { 
+                console.error("Status Sync Error:", error); 
+            }
+        }
+
+        // 3. 로그아웃 비컨 (브라우저 닫을 때 즉시 해제)
+        window.addEventListener('beforeunload', function (e) {
+            const formData = new FormData();
+            formData.append('action', 'logout'); 
+            navigator.sendBeacon('heartbeat.php', formData);
+        });
+
+        // 4. 인터벌 설정 및 초기 실행
+        setInterval(refreshLogs, 5000); 
+        setInterval(updateLiveStatus, 5000);
+
+        refreshLogs();
+        updateLiveStatus();
     </script>
 </body>
 </html>

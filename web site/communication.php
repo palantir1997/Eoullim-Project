@@ -134,6 +134,20 @@ function findMessageById(messages, id) {
     return messages.find(m => String(m.id) === String(id));
 }
 
+const pageId = "Team Communication"; 
+
+async function updateLiveStatus() {
+    try {
+        const formData = new FormData();
+        formData.append('page', pageId); // 서버로 "Team Communication" 전달
+
+        const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
+        const result = await response.json();
+    } catch (error) { 
+        console.error("Status Sync Error:", error); 
+    }
+}
+
 async function loadMessages() {
     try {
         const res = await fetch(`chat_api.php?room=${ROOM}`);
@@ -222,7 +236,13 @@ input.addEventListener('keydown', (e) => {
     }
 });
 
-setInterval(loadMessages, 3000);
+window.addEventListener('beforeunload', function (e) {
+    const formData = new FormData();
+    formData.append('action', 'logout'); 
+    navigator.sendBeacon('heartbeat.php', formData);
+});
+
+setInterval(loadMessages, 5000);
 loadMessages();
 </script>
 </body>

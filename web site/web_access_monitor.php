@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['userid'])) {
+    echo "<script>
+        alert('회원만 이용할 수 있습니다. 로그인해주세요!');
+        location.href = 'login.php';
+    </script>";
+    exit;
+} 
 $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 ?>
 <!DOCTYPE html>
@@ -79,6 +86,7 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
     </div>
 
     <script>
+        // --- 1. 기존 로그 업데이트 기능 (유지) ---
         function updateLogs() {
             fetch('get_web_logs.php')
                 .then(response => response.text())
@@ -91,9 +99,37 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
                     document.getElementById('log-display').innerHTML = "데이터 호출 오류: " + err;
                 });
         }
-
         setInterval(updateLogs, 5000);
         updateLogs();
+
+        // --- 2. 실시간 팀 세션 업데이트
+        
+        // 현재 페이지가 web_access_monitor.php이므로 리스트에는 "Web Monitor"로 표시되도록 설정
+        const pageId = "Web Monitor"; 
+
+        async function updateLiveStatus() {
+            try {
+                const formData = new FormData();
+                formData.append('page', pageId); // 서버로 "Web Monitor" 전달
+
+                const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
+                // board.php와 동일하게 처리
+                const result = await response.json();
+            } catch (error) { 
+                console.error("Status Sync Error:", error); 
+            }
+        }
+
+        // 로그아웃 비컨 (브라우저 닫을 때 즉시 해제)
+        window.addEventListener('beforeunload', function (e) {
+            const formData = new FormData();
+            formData.append('action', 'logout'); 
+            navigator.sendBeacon('heartbeat.php', formData);
+        });
+
+        // 5초마다 신호 전송 시작
+        setInterval(updateLiveStatus, 5000);
+        updateLiveStatus();
     </script>
 </body>
 </html>
