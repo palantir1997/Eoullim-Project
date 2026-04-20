@@ -1,7 +1,7 @@
 # Aulim Security - 웹 서비스 기업 대상 통합 보안 솔루션
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d84ea5b3-2a3d-47fc-a442-aa6b625f8feb" width="100%">
+  <img src="https://github.com/user-attachments/assets/3cfb1e38-3bf7-4d41-a026-ee8e4ddc4c01" width="100%">
 </p>
 
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다. <br>
