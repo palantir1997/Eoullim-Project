@@ -196,13 +196,43 @@ $userId = $_SESSION['userid'];
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-        window.onload = function() {
-                    const btn = document.querySelector('.btn-primary.btn-sm');
-                    if(btn) {
-                        btn.setAttribute('data-bs-toggle', 'modal');
-                        btn.setAttribute('data-bs-target', '#newPostModal');
-                    }
-                };
+            // 1. 페이지 이름 매핑 및 설정
+            const urlPath = window.location.pathname.split("/").pop();
+            // 현재 페이지가 board.php이므로 리스트에는 "Team Board"로 표시되도록 설정
+            const pageId = "Team Board"; 
+
+            // 2. 기존 버튼 모달 설정 로직 (유지)
+            window.addEventListener('load', function() {
+                const btn = document.querySelector('.btn-primary.btn-sm');
+                if(btn) {
+                    btn.setAttribute('data-bs-toggle', 'modal');
+                    btn.setAttribute('data-bs-target', '#newPostModal');
+                }
+            });
+
+            // 3. 실시간 팀 세션 업데이트 함수
+            async function updateLiveStatus() {
+                try {
+                    const formData = new FormData();
+                    formData.append('page', pageId); // 서버로 "Team Board" 전달
+
+                    const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
+                    const result = await response.json();
+                } catch (error) { 
+                    console.error("Status Sync Error:", error); 
+                }
+            }
+
+            // 4. 로그아웃 비컨 (브라우저 닫을 때 즉시 해제)
+            window.addEventListener('beforeunload', function (e) {
+                const formData = new FormData();
+                formData.append('action', 'logout'); 
+                navigator.sendBeacon('heartbeat.php', formData);
+            });
+
+            // 5. 5초마다 신호 전송 시작
+            setInterval(updateLiveStatus, 5000);
+            updateLiveStatus();
         </script>
 
             </body>
