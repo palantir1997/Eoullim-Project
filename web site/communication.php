@@ -62,6 +62,33 @@ body { background-color: #f8f9fc; }
 .chat-sender.me {
     text-align: right;
 }
+
+.reply-quote {
+    background: rgba(255, 255, 255, 0.2);
+    border-left: 3px solid #ccc;
+    padding: 2px 8px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+.chat-bubble.other .reply-quote { background: #eee; }
+
+.reply-link {
+    font-size: 0.7rem;
+    cursor: pointer;
+    margin-left: 8px;
+    color: #007bff;
+    text-decoration: none;
+}
+.reply-link:hover { text-decoration: underline; }
+
+#replyStatus {
+    display: none;
+    background: #e9ecef;
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    border-top: 1px solid #ddd;
+}
 </style>
 </head>
 
@@ -167,9 +194,15 @@ const input = document.getElementById('chatInput');
 const button = document.getElementById('sendBtn');
 
 const ROOM = "eoullim";
+let selectedReplyId = null; // 현재 답장 중인 메시지 ID 저장
+
+// 메시지 목록에서 ID로 특정 메시지를 찾는 함수
+function findMessageById(messages, id) {
+    return messages.find(m => String(m.id) === String(id));
+}
 
 // ========================
-// 메시지 불러오기
+// 메시지 불러오기 (수정됨)
 // ========================
 async function loadMessages() {
     try {
@@ -183,21 +216,50 @@ async function loadMessages() {
         data.messages.forEach(msg => {
             const isMe = msg.userId === data.currentUser;
 
+            // 1. 발신자 표시
             const sender = document.createElement('div');
             sender.className = 'chat-sender ' + (isMe ? 'me mt-3' : 'mt-2');
             sender.innerText = isMe ? 'Me (' + msg.userId + ')' : msg.userId;
 
+            // 2. 채팅 버블 생성
             const bubble = document.createElement('div');
             bubble.className = 'chat-bubble ' + (isMe ? 'me' : 'other');
-            bubble.innerText = msg.message;
+
+            // --- [추가] 답장 인용구 표시 로직 ---
+            if (msg.replyTo) {
+                const originalMsg = findMessageById(data.messages, msg.replyTo);
+                if (originalMsg) {
+                    const quote = document.createElement('div');
+                    quote.className = 'reply-quote';
+                    quote.innerText = `↪ ${originalMsg.userId}: ${originalMsg.message.substring(0, 15)}...`;
+                    bubble.appendChild(quote);
+                }
+            }
+
+            // 3. 메시지 본문
+            const textSpan = document.createElement('span');
+            textSpan.innerText = msg.message;
+            bubble.appendChild(textSpan);
+
+            // --- [추가] 답장 버튼 생성 ---
+            const replyBtn = document.createElement('a');
+            replyBtn.className = 'reply-link';
+            replyBtn.innerHTML = '<i class="fas fa-reply"></i> 답장';
+            replyBtn.onclick = () => {
+                selectedReplyId = msg.id;
+                input.placeholder = `${msg.userId}님께 답장 중... (ESC로 취소)`;
+                input.classList.add('border-primary'); // 입력창 강조
+                input.focus();
+            };
 
             chatBox.appendChild(sender);
             chatBox.appendChild(bubble);
+            // 내 메시지면 버튼을 오른쪽에, 남의 메시지면 왼쪽에 배치하기 위해 bubble 뒤에 추가
+            bubble.after(replyBtn); 
         });
 
-        setTimeout(() => {
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 100);
+        // 스크롤 하단 이동
+        chatBox.scrollTop = chatBox.scrollHeight;
 
     } catch (err) {
         console.error(err);
@@ -205,7 +267,7 @@ async function loadMessages() {
 }
 
 // ========================
-// 메시지 보내기
+// 메시지 보내기 (수정됨)
 // ========================
 async function sendMessage() {
     const message = input.value.trim();
@@ -213,6 +275,11 @@ async function sendMessage() {
 
     const formData = new FormData();
     formData.append('message', message);
+    
+    // [추가] 답장 ID가 있으면 서버로 함께 전송
+    if (selectedReplyId) {
+        formData.append('replyTo', selectedReplyId);
+    }
 
     try {
         await fetch(`chat_api.php?room=${ROOM}`, {
@@ -220,7 +287,11 @@ async function sendMessage() {
             body: formData
         });
 
+        // 초기화
         input.value = '';
+        input.placeholder = "메시지를 입력하세요...";
+        input.classList.remove('border-primary');
+        selectedReplyId = null; 
         loadMessages();
 
     } catch (err) {
@@ -228,14 +299,25 @@ async function sendMessage() {
     }
 }
 
-// 이벤트
+// ========================
+// 이벤트 리스너
+// ========================
 button.addEventListener('click', sendMessage);
 
 input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') sendMessage();
 });
 
-// 자동 갱신
+// ESC 키를 누르면 답장 모드 취소
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        selectedReplyId = null;
+        input.placeholder = "메시지를 입력하세요...";
+        input.classList.remove('border-primary');
+    }
+});
+
+// 자동 갱신 (2초)
 setInterval(loadMessages, 2000);
 
 // 최초 실행

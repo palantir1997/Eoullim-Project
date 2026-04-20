@@ -19,6 +19,7 @@ header('Content-Type: application/json');
 // POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = trim($_POST['message'] ?? '');
+    $replyTo = $_POST['replyTo'] ?? null;
 
     if ($message === '') {
         echo json_encode(['success' => false]);
@@ -26,21 +27,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $newMessage = [
+        'id' => time() . rand(100, 999),
         'userId' => $userId,
         'message' => htmlspecialchars($message),
-        'time' => date('H:i')
+        'time' => date('H:i'),
+        'replyTo' => $replyTo
     ];
 
     $messages = file_exists($chatFile) ? json_decode(file_get_contents($chatFile), true) : [];
     if (!is_array($messages)) $messages = [];
 
     $messages[] = $newMessage;
-
     file_put_contents($chatFile, json_encode($messages, JSON_UNESCAPED_UNICODE));
 
     echo json_encode(['success' => true]);
 
-// GET
 } else {
     $messages = file_exists($chatFile) ? json_decode(file_get_contents($chatFile), true) : [];
     if (!is_array($messages)) $messages = [];
