@@ -9,45 +9,32 @@ $statusFile = $chatDir . '/online_users.json';
 // 1. 유저 ID 및 IP 설정
 $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : 'Guest_' . substr(session_id(), 0, 5);
 $userIp = $_SERVER['REMOTE_ADDR'];
-
-// 2. [수정] Unknown 방지: 페이지 정보가 없으면 기본값 설정
 $currentPage = (isset($_POST['page']) && !empty($_POST['page'])) ? $_POST['page'] : 'Admin Dashboard';
 
+// 2. 기존 데이터 로드 (ID를 키값으로 하는 연관 배열로 변환 준비)
 $users = file_exists($statusFile) ? json_decode(file_get_contents($statusFile), true) : [];
+$newUsersByMap = [];
 $now = time();
 
-// 3. [핵심 수정] 중복 검사 로직: 동일한 유저 ID가 있으면 해당 데이터만 업데이트 (중복 생성 방지)
-$newUsers = [];
-$found = false;
-
+// 3. [핵심] 기존 데이터를 정리하며 1시간 이내 활동자만 필터링
 foreach ($users as $user) {
-    if ($user['id'] === $userId) {
-        // 이미 목록에 있는 유저라면 현재 정보로 갱신
-        $newUsers[] = [
-            'id' => $userId, 
-            'ip' => $userIp, 
-            'page' => $currentPage, 
-            'last_seen' => $now
-        ];
-        $found = true;
-    } else {
-        // 다른 유저들은 1시간(3600초) 이내 활동 기록이 있는 경우에만 유지
-        if ($now - $user['last_seen'] < 3600) {
-            $newUsers[] = $user;
-        }
+    // 1시간 이내 활동했고, 아직 이 ID가 맵에 등록되지 않았을 때만 유지
+    if (($now - $user['last_seen'] < 3600) && !isset($newUsersByMap[$user['id']])) {
+        $newUsersByMap[$user['id']] = $user;
     }
 }
 
-// 목록에 없던 새로운 유저라면 추가
-if (!$found) {
-    $newUsers[] = [
-        'id' => $userId, 
-        'ip' => $userIp, 
-        'page' => $currentPage, 
-        'last_seen' => $now
-    ];
-}
+// 4. [중복 방지 핵심] 현재 접속한 유저 정보를 'ID 키'에 강제로 덮어씌움 (무조건 1개만 존재)
+$newUsersByMap[$userId] = [
+    'id' => $userId, 
+    'ip' => $userIp, 
+    'page' => $currentPage, 
+    'last_seen' => $now
+];
 
-// 4. 결과 저장 및 출력
-file_put_contents($statusFile, json_encode($newUsers));
-echo json_encode(['success' => true, 'onlineUsers' => $newUsers]);
+// 5. 저장 (JSON 저장을 위해 다시 인덱스 배열로 변환)
+$finalUsers = array_values($newUsersByMap);
+file_put_contents($statusFile, json_encode($finalUsers));
+
+// 6. 출력
+echo json_encode(['success' => true, 'onlineUsers' => $finalUsers]);
