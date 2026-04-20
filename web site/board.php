@@ -14,7 +14,7 @@ $pass = 'jaewon';
 $dbname = 'eoulrim_db'; 
 
 $conn = mysqli_connect($host, $user, $pass, $dbname); 
-$sql = "SELECT * FROM team_board ORDER BY idx DESC"; 
+$sql = "SELECT * FROM team_board ORDER BY views DESC, idx DESC";
 $result = mysqli_query($conn, $sql);
 
 $userId = $_SESSION['userid'];
@@ -106,7 +106,7 @@ $userId = $_SESSION['userid'];
                             <th style="width: 8%;">번호</th>
                             <th style="width: 37%;">제목</th>
                             <th style="width: 10%;">파일</th> <th style="width: 15%;">작성자</th>
-                            <th style="width: 15%;">등록일시</th>
+                            <th style="width: 10%;">조회수</th> <th style="width: 15%;">등록일시</th>
                             <th style="width: 15%;">관리</th> </tr>
                     </thead>
                     <tbody>
@@ -137,7 +137,7 @@ $userId = $_SESSION['userid'];
                                     <?php } ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($row['author']); ?></td>
-                                    <td><?php echo $row['reg_date']; ?></td>
+                                    <td><?php echo $row['views']; ?></td> <td><?php echo $row['reg_date']; ?></td>
                                     <td>
                                         <?php if ($_SESSION['userid'] === $row['author']) { ?>
                                             <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-sm btn-outline-secondary">수정</a>
@@ -145,7 +145,7 @@ $userId = $_SESSION['userid'];
                                         <?php } else { echo "<span class='text-muted' style='font-size:0.8em;'>권한없음</span>"; } ?>
                                     </td>
                                 </tr>
-                        <?php } } else { echo "<tr><td colspan='6' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>"; } ?>
+                       <?php } } else { echo "<tr><td colspan='7' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>"; } ?> 
                     </tbody>
                 </table>
                         </div>

@@ -5,20 +5,18 @@ if (!isset($_SESSION['userid'])) {
     exit;
 }
 
-$host = '100.64.27.39';
-$user = 'jaewon'; 
-$pass = 'jaewon'; 
-$dbname = 'eoulrim_db'; 
-$conn = mysqli_connect($host, $user, $pass, $dbname);
+$conn = mysqli_connect('100.64.27.39', 'jaewon', 'jaewon', 'eoulrim_db');
 
 if (isset($_POST['board_idx']) && isset($_POST['content'])) {
     
     $board_idx = (int)$_POST['board_idx'];
     $content = mysqli_real_escape_string($conn, $_POST['content']);
-    $author = $_SESSION['userid']; 
+    $author = $_SESSION['userid'];
+    
+    $parent_idx = !empty($_POST['parent_idx']) ? (int)$_POST['parent_idx'] : "NULL";
 
-    $sql = "INSERT INTO board_comments (board_idx, author, content, reg_date) 
-            VALUES ($board_idx, '$author', '$content', NOW())";
+    $sql = "INSERT INTO board_comments (board_idx, parent_idx, author, content, reg_date) 
+            VALUES ($board_idx, $parent_idx, '$author', '$content', NOW())";
 
     if (mysqli_query($conn, $sql)) {
         echo "<script>location.href='view.php?idx=$board_idx';</script>";
@@ -28,6 +26,5 @@ if (isset($_POST['board_idx']) && isset($_POST['content'])) {
 } else {
     echo "<script>alert('정상적인 접근이 아닙니다.'); history.back();</script>";
 }
-
 mysqli_close($conn);
 ?>

@@ -13,6 +13,8 @@ $conn = mysqli_connect($host, $user, $pass, $dbname);
 
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
+mysqli_query($conn, "UPDATE team_board SET views = views + 1 WHERE idx = $idx");
+
 $sql = "SELECT * FROM team_board WHERE idx = $idx";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -65,20 +67,38 @@ if(!$row) {
             <div class="card-body p-4">
                 
                 <?php
-                $comment_sql = "SELECT * FROM board_comments WHERE board_idx = $idx ORDER BY idx ASC";
+                $comment_sql = "SELECT * FROM board_comments WHERE board_idx = $idx ORDER BY IFNULL(parent_idx, idx) ASC, idx ASC";
                 $comment_result = mysqli_query($conn, $comment_sql);
                 
                 if ($comment_result && mysqli_num_rows($comment_result) > 0) {
                     while ($c_row = mysqli_fetch_assoc($comment_result)) {
+                        $is_reply = !empty($c_row['parent_idx']);
                 ?>
-                        <div class="mb-3 border-bottom pb-3">
+                        <div class="mb-3 border-bottom pb-3 <?php echo $is_reply ? 'ms-4 ps-3 border-start border-3 border-light' : ''; ?>">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <strong><?php echo htmlspecialchars($c_row['author']); ?></strong>
+                                <div>
+                                    <?php if($is_reply) { ?><i class="fas fa-reply fa-rotate-180 text-muted me-1"></i><?php } ?>
+                                    <strong><?php echo htmlspecialchars($c_row['author']); ?></strong>
+                                </div>
                                 <span class="text-muted" style="font-size: 0.8em;"><?php echo $c_row['reg_date']; ?></span>
                             </div>
-                            <div style="font-size: 0.95em;">
+                            <div style="font-size: 0.95em;" class="mb-2">
                                 <?php echo nl2br(htmlspecialchars($c_row['content'])); ?>
                             </div>
+                            
+                            <?php if (!$is_reply) { ?>
+                                <button class="btn btn-sm btn-light text-secondary p-1" style="font-size: 0.8em;" 
+                                        onclick="document.getElementById('reply_<?php echo $c_row['idx']; ?>').classList.toggle('d-none')">
+                                    <i class="fas fa-comment-dots"></i> 
+                                </button>
+                                
+                                <form action="comment_process.php" method="POST" id="reply_<?php echo $c_row['idx']; ?>" class="mt-2 d-none d-flex gap-2">
+                                    <input type="hidden" name="board_idx" value="<?php echo $idx; ?>">
+                                    <input type="hidden" name="parent_idx" value="<?php echo $c_row['idx']; ?>">
+                                    <input type="text" name="content" class="form-control form-control-sm" placeholder="답글을 입력하세요..." required>
+                                    <button type="submit" class="btn btn-sm btn-secondary">등록</button>
+                                </form>
+                            <?php } ?>
                         </div>
                 <?php
                     }
