@@ -2,49 +2,39 @@
 session_start();
 header('Content-Type: application/json');
 
-$dataFile = 'chat_data/chat_eoullim.json'; 
+$jsonFile = 'chat_data/chat_eoullim.json';
+$users = [];
 
-$userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : 'Guest';
-$currentPage = isset($_POST['page']) ? $_POST['page'] : 'Unknown';
-$userIp = $_SERVER['REMOTE_ADDR'];
-$now = time();
-
-$allData = [];
-if (file_exists($dataFile)) {
-    $content = file_get_contents($dataFile);
-    $allData = json_decode($content, true) ?: [];
+if (file_exists($jsonFile)) {
+    $content = file_get_contents($jsonFile);
+    $users = json_decode($content, true) ?: [];
 }
 
-// 기존 채팅 데이터와 섞이지 않도록 구조 강제 변환
-if (!is_array($allData) || (isset($allData[0]) && !isset($allData['online_users']))) {
-    $tempMessages = $allData;
-    $allData = ['messages' => $tempMessages, 'online_users' => []];
+$userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
+
+// 로그아웃 액션이 들어오거나 세션이 없으면 목록에서 제거
+if (isset($_POST['action']) && $_POST['action'] === 'logout' && $userId) {
+    unset($users[$userId]);
+} 
+// 평소에는 정보 업데이트
+elseif ($userId) {
+    $users[$userId] = [
+        'id' => $userId,
+        'page' => isset($_POST['page']) ? $_POST['page'] : 'Unknown',
+        'ip' => $_SERVER['REMOTE_ADDR'],
+        'last_seen' => time()
+    ];
 }
 
-if (!isset($allData['online_users'])) {
-    $allData['online_users'] = [];
-}
+// 15초 이상 응답 없는 유저도 '안전장치'로 제거 (브라우저가 비정상 종료될 경우 대비)
+$currentTime = time();
+$activeUsers = array_filter($users, function($u) use ($currentTime) {
+    return ($currentTime - $u['last_seen']) < 15;
+});
 
-// 현재 접속 정보 갱신
-$allData['online_users'][$userId] = [
-    'id' => $userId,
-    'page' => $currentPage,
-    'ip' => $userIp,
-    'last_seen' => $now
-];
+file_put_contents($jsonFile, json_encode(array_values($activeUsers), JSON_UNESCAPED_UNICODE));
 
-// 30초 이상 무응답 유저 삭제
-foreach ($allData['online_users'] as $id => $info) {
-    if ($now - $info['last_seen'] > 30) {
-        unset($allData['online_users'][$id]);
-    }
-}
-
-file_put_contents($dataFile, json_encode($allData), LOCK_EX);
-
-// 중요: 여기서는 오직 JSON만 출력해야 합니다.
 echo json_encode([
-    'success' => true, 
-    'onlineUsers' => array_values($allData['online_users'])
+    'success' => true,
+    'onlineUsers' => array_values($activeUsers)
 ]);
-exit; // 이후에 다른 내용이 출력되지 않도록 종료

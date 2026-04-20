@@ -124,6 +124,12 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
     <script>
         const pageId = "Admin Dashboard";
 
+        window.addEventListener('beforeunload', function (e) {
+            const formData = new FormData();
+            formData.append('action', 'logout'); 
+            navigator.sendBeacon('heartbeat.php', formData);
+        });
+        
         async function updateLiveStatus() {
             try {
                 const formData = new FormData();
