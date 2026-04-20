@@ -3,6 +3,7 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/3cfb1e38-3bf7-4d41-a026-ee8e4ddc4c01" width="100%">
 </p>
+
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다. <br>
 실시간 탐지 및 자동 대응이 가능한 안정적인 서비스 운영 환경을 구축합니다.
 
