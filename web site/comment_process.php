@@ -18,10 +18,19 @@ if (isset($_POST['board_idx']) && isset($_POST['content'])) {
     $image_file_db = "NULL"; 
 
     if (isset($_FILES['comment_image']) && $_FILES['comment_image']['error'] == 0) {
+        
+        $allowed_ext = array('jpg', 'jpeg', 'png', 'gif', 'txt', 'pdf', 'zip'); 
+        $filename = $_FILES['comment_image']['name']; 
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); 
+
+        if (!in_array($ext, $allowed_ext)) {
+            echo "<script>alert('보안상 위험한 파일 확장자(.php, .exe 등)는 업로드할 수 없습니다.'); history.back();</script>";
+            exit;
+        }
+
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
         
-        // 중복 방지를 위해 파일명 앞에 현재 시간을 붙여줍니다 (예: 1690000000_photo.jpg)
         $file_name = time() . "_" . basename($_FILES["comment_image"]["name"]);
         $target_file = $target_dir . $file_name;
 

@@ -17,12 +17,23 @@ if (isset($_POST['title'])) {
     $file_name_db = ""; 
 
     if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] == 0) {
+        
+        $allowed_ext = array('jpg', 'jpeg', 'png', 'gif', 'txt', 'pdf', 'zip', 'hwp', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'); 
+        
+        $filename = $_FILES['upload_file']['name']; 
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); 
+
+        if (!in_array($ext, $allowed_ext)) {
+            echo "<script>alert('보안상 위험한 파일 확장자(.php, .exe 등)는 업로드할 수 없습니다. 이미지나 문서 파일만 올려주세요.'); history.back();</script>";
+            exit;
+        }
+
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
         
-        $file_name = basename($_FILES["upload_file"]["name"]);
+        $file_name = time() . "_" . basename($_FILES["upload_file"]["name"]);
         $target_file = $target_dir . $file_name;
 
         if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], $target_file)) {
