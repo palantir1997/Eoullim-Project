@@ -174,14 +174,26 @@ async function loadMessages() {
 
             // [핵심] 답장 인용구 표시
             if (msg.replyTo) {
-                const originalMsg = findMessageById(data.messages, msg.replyTo);
-                if (originalMsg) {
-                    const quote = document.createElement('div');
-                    quote.className = 'reply-quote';
-                    quote.innerHTML = `<i class="fas fa-quote-left fa-xs me-1"></i> <strong>${originalMsg.userId}</strong>: ${originalMsg.message.substring(0, 20)}${originalMsg.message.length > 20 ? '...' : ''}`;
-                    bubble.appendChild(quote);
-                }
+            const originalMsg = findMessageById(data.messages, msg.replyTo);
+            if (originalMsg) {
+                const quote = document.createElement('div');
+                quote.className = 'reply-quote';
+                
+                const quoteIcon = document.createElement('i');
+                quoteIcon.className = 'fas fa-quote-left fa-xs me-1';
+                
+                const authorStrong = document.createElement('strong');
+                authorStrong.textContent = originalMsg.userId;
+
+                const msgPreview = document.createTextNode(`: ${originalMsg.message.substring(0, 20)}${originalMsg.message.length > 20 ? '...' : ''}`);
+
+                quote.appendChild(quoteIcon);
+                quote.appendChild(authorStrong);
+                quote.appendChild(msgPreview);
+                
+                bubble.appendChild(quote);
             }
+        }
 
             const textSpan = document.createElement('span');
             textSpan.innerText = msg.message;
