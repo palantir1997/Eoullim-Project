@@ -1,5 +1,10 @@
 <?php
-$logPath = '/var/log/httpd/ssl_access_log';
+$accessLog = '/var/log/httpd/access_log';
+$sslLog = '/var/log/httpd/ssl_access_log';
+
+$cmd = "cat $accessLog $sslLog 2>/dev/null | sort -k 4 | tail -n 15";
+
+$allLogs = shell_exec($cmd);
 
 if (file_exists($logPath)) {
     $command = "tail -n 100 " . escapeshellarg($logPath) . " | grep -v 'heartbeat.php' | grep -v 'get_web_logs.php' | tail -n 15";
