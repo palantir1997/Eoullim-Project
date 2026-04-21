@@ -41,7 +41,7 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
-            <h3 class="h4 mb-0 text-gray-800 fw-bold">Admin Dashboard - Network Status</h3>
+            <h3 class="h4 mb-0 text-gray-800 fw-bold">Admin Dashboard</h3>
 
             <ul class="navbar-nav align-items-center flex-row mb-0">
                 <li class="nav-item d-flex align-items-center">
