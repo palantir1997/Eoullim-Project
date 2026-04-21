@@ -18,21 +18,21 @@ if (file_exists($accessLog) || file_exists($sslLog)) {
         if (empty(trim($line))) continue;
         $parts = explode(' ', $line);
         
-        $ip = $parts[0]; 
+        $ip = $parts[0];
         $time = isset($parts[3]) ? str_replace('[', '', $parts[3]) : '-'; 
         
         $method = isset($parts[5]) ? str_replace('"', '', $parts[5]) : '-';
         $path = isset($parts[6]) ? $parts[6] : '-';
         $status = isset($parts[8]) ? $parts[8] : '-';
 
-        echo "<div class='log-entry' style='margin-bottom: 5px; font-family: monospace;'>";
+        echo "<div class='log-entry'>";
         echo "<span style='color: #888;'>[$time]</span> ";
         echo "<span style='color: #00ff00; font-weight: bold;'>$ip</span> ";
-        echo "── $method <span style='color: #00d4ff;'>$path</span> ";
+        echo "── $method $path ";
         echo "<span class='badge " . ($status == '200' ? 'bg-success' : 'bg-danger') . "'>$status</span>";
         echo "</div>";
     }
 } else {
-    echo "로그 파일을 찾을 수 없습니다. (경로 확인 필요)";
+    echo "로그 파일을 찾을 수 없습니다: $sslLog 및 $accessLog";
 }
 ?>
