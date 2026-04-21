@@ -2,7 +2,8 @@
 $logPath = '/var/log/httpd/access_log';
 
 if (file_exists($logPath)) {
-    $output = shell_exec("tail -n 15 " . escapeshellarg($logPath));
+    $command = "tail -n 100 " . escapeshellarg($logPath) . " | grep -v 'heartbeat.php' | grep -v 'get_web_logs.php' | tail -n 15";
+    $output = shell_exec($command);
     if (!$output) {
         echo "로그 파일이 비어있거나 읽을 수 없습니다.";
         exit;
