@@ -41,12 +41,8 @@ $userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
-            <form class="d-none d-sm-inline-block form-inline mr-auto" style="width: 350px;">
-                <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
-                    <button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button>
-                </div>
-            </form>
+            <h3 class="h4 mb-0 text-gray-800 fw-bold">Admin Dashboard - Network Status</h3>
+
             <ul class="navbar-nav align-items-center flex-row mb-0">
                 <li class="nav-item d-flex align-items-center">
                     <?php if ($userId): ?>
