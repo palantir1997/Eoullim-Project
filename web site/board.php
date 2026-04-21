@@ -23,27 +23,32 @@ mysqli_set_charset($conn, "utf8mb4");
 $userId = $_SESSION['userid'];
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-if ($search !== '') {
-    $stmt = $conn->prepare("
-        SELECT * FROM team_board 
-        WHERE title LIKE ? 
-           OR post LIKE ? 
-           OR author LIKE ?
-        ORDER BY idx DESC
-    ");
+    $list_num = 20; 
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $start_num = ($page - 1) * $list_num;
 
-    $like = "%{$search}%";
-    $stmt->bind_param("sss", $like, $like, $like);
+    if ($search !== '') {
+        $count_stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM team_board WHERE title LIKE ? OR post LIKE ? OR author LIKE ?");
+        $like = "%{$search}%";
+        $count_stmt->bind_param("sss", $like, $like, $like);
+    } else {
+        $count_stmt = $conn->prepare("SELECT COUNT(*) as cnt FROM team_board");
+    }
+    $count_stmt->execute();
+    $count_result = $count_stmt->get_result();
+    $total_count = $count_result->fetch_assoc()['cnt'];
+    $total_page = ceil($total_count / $list_num); 
 
-} else {
-    $stmt = $conn->prepare("
-        SELECT * FROM team_board 
-        ORDER BY idx DESC
-    ");
-}
+    if ($search !== '') {
+        $stmt = $conn->prepare("SELECT * FROM team_board WHERE title LIKE ? OR post LIKE ? OR author LIKE ? ORDER BY idx DESC LIMIT ?, ?");
+        $stmt->bind_param("sssii", $like, $like, $like, $start_num, $list_num);
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM team_board ORDER BY idx DESC LIMIT ?, ?");
+        $stmt->bind_param("ii", $start_num, $list_num);
+    }
 
-$stmt->execute();
-$result = $stmt->get_result();
+    $stmt->execute();
+    $result = $stmt->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -174,6 +179,18 @@ $result = $stmt->get_result();
                        <?php } } else { echo "<tr><td colspan='7' class='text-center py-4'>등록된 게시글이 없습니다.</td></tr>"; } ?> 
                     </tbody>
                 </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        <?php
+                        $search_param = ($search !== '') ? "&search=".urlencode($search) : "";
+                        
+                        for ($i = 1; $i <= $total_page; $i++) {
+                            $active = ($page == $i) ? "active" : "";
+                            echo "<li class='page-item {$active}'><a class='page-link' href='board.php?page={$i}{$search_param}'>{$i}</a></li>";
+                        }
+                        ?>
+                    </ul>
+                </nav>
                         </div>
                     </div>
                 </div>
@@ -222,12 +239,9 @@ $result = $stmt->get_result();
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // 1. 페이지 이름 매핑 및 설정
             const urlPath = window.location.pathname.split("/").pop();
-            // 현재 페이지가 board.php이므로 리스트에는 "Team Board"로 표시되도록 설정
             const pageId = "Team Board"; 
 
-            // 2. 기존 버튼 모달 설정 로직 (유지)
             window.addEventListener('load', function() {
                 const btn = document.querySelector('.btn-primary.btn-sm');
                 if(btn) {
@@ -236,11 +250,10 @@ $result = $stmt->get_result();
                 }
             });
 
-            // 3. 실시간 팀 세션 업데이트 함수
             async function updateLiveStatus() {
                 try {
                     const formData = new FormData();
-                    formData.append('page', pageId); // 서버로 "Team Board" 전달
+                    formData.append('page', pageId); 
 
                     const response = await fetch('heartbeat.php', { method: 'POST', body: formData });
                     const result = await response.json();
@@ -249,14 +262,13 @@ $result = $stmt->get_result();
                 }
             }
 
-            // 4. 로그아웃 비컨 (브라우저 닫을 때 즉시 해제)
+
             window.addEventListener('beforeunload', function (e) {
                 const formData = new FormData();
                 formData.append('action', 'logout'); 
                 navigator.sendBeacon('heartbeat.php', formData);
             });
 
-            // 5. 5초마다 신호 전송 시작
             setInterval(updateLiveStatus, 5000);
             updateLiveStatus();
         </script>
