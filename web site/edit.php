@@ -11,6 +11,8 @@ $pass = 'jaewon';
 $dbname = 'eoulrim_db'; 
 $conn = mysqli_connect($host, $user, $pass, $dbname);
 
+mysqli_set_charset($conn, "utf8mb4");
+
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
 $sql = "SELECT * FROM team_board WHERE idx = $idx";
@@ -46,7 +48,7 @@ $userId = $_SESSION['userid'];
                 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Title (제목)</label>
-                    <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($row['title']); ?>" required>
+                   <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($row['title']); ?>" placeholder="수정할 제목을 입력하세요" required> 
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Post Content (내용)</label>

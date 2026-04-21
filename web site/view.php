@@ -91,8 +91,8 @@ if(!$row) {
                 <?php 
                 if ($_SESSION['userid'] === $row['author']) { 
                 ?>
-                    <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-primary">수정하기</a>
                     <a href="delete_process.php?idx=<?php echo $row['idx']; ?>" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+                    <a href="edit.php?idx=<?php echo $row['idx']; ?>" class="btn btn-primary">수정하기</a>
                 <?php 
                 } 
                 ?>
