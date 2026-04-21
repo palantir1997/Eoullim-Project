@@ -1,5 +1,5 @@
 <?php
-$logPath = '/var/log/httpd/access_log';
+$logPath = '/var/log/httpd/ssl_access_log';
 
 if (file_exists($logPath)) {
     $command = "tail -n 100 " . escapeshellarg($logPath) . " | grep -v 'heartbeat.php' | grep -v 'get_web_logs.php' | tail -n 15";
