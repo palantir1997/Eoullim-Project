@@ -9,12 +9,15 @@ if (!isset($_SESSION['userid'])) {
 } 
 
 $host = '100.64.27.39';
-$user = 'jaewon'; 
-$pass = 'jaewon'; 
-$dbname = 'eoulrim_db'; 
+$user = 'jaewon';
+$pass = 'jaewon';
+$dbname = 'eoulrim_db';
 
-$conn = mysqli_connect($host, $user, $pass, $dbname); 
-$sql = "SELECT * FROM team_board ORDER BY views DESC, idx DESC";
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+
+mysqli_set_charset($conn, "utf8mb4");
+
+$sql = "SELECT * FROM team_board ORDER BY idx DESC";
 $result = mysqli_query($conn, $sql);
 
 $userId = $_SESSION['userid'];

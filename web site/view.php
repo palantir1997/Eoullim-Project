@@ -166,11 +166,11 @@ if(!$row) {
     <script>
         $(document).ready(function() {
             $('#summernote').summernote({
-                height: 120, // 에디터 높이
+                height: 120, 
                 placeholder: '이곳에 텍스트를 적거나, 이미지를 복사+붙여넣기(Ctrl+V) 해보세요!',
                 toolbar: [
                     ['font', ['bold', 'underline', 'clear']],
-                    ['insert', ['picture']] // 사진 첨부 아이콘 활성화
+                    ['insert', ['picture']] 
                 ]
             });
         });
