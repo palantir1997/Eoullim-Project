@@ -25,6 +25,7 @@ if(!$row) {
     echo "<script>alert('존재하지 않는 게시글입니다.'); location.href='board.php';</script>";
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -51,7 +52,39 @@ if(!$row) {
             </div>
             <div class="card-body p-4" style="min-height: 300px;">
                 <p class="fs-5"><?php echo nl2br(htmlspecialchars($row['post'])); ?></p>
-            </div>
+            </div> 
+
+            <!--수정중-->
+            <?php if (!empty($row['file_name'])) { ?>
+<div class="card-body border-top bg-light">
+
+    <h6 class="fw-bold mb-3">📎 첨부파일</h6>
+
+    <!-- 다운로드 링크 -->
+    <a href="uploads/<?php echo urlencode($row['file_name']); ?>" 
+       download="<?php echo htmlspecialchars($row['file_name']); ?>"
+       class="text-primary d-block mb-2">
+        <?php echo htmlspecialchars($row['file_name']); ?>
+    </a>
+
+    <?php 
+    $ext = strtolower(pathinfo($row['file_name'], PATHINFO_EXTENSION));
+    $img_ext = ['jpg','jpeg','png','gif','webp'];
+
+    if (in_array($ext, $img_ext)) { 
+    ?>
+        <!-- 이미지 전용 박스 -->
+        <div class="border rounded p-2 bg-white text-center">
+            <img src="uploads/<?php echo urlencode($row['file_name']); ?>" 
+                 style="max-width: 100%; max-height: 400px;">
+        </div>
+    <?php } ?>
+
+</div>
+<?php } ?>
+          
+
+
             <div class="card-footer bg-white py-3 text-end">
                 <a href="board.php" class="btn btn-secondary">목록으로</a>
                 

@@ -38,7 +38,8 @@ if (isset($_FILES['upload_file']) && $_FILES['upload_file']['error'] == 0) {
     $title = "내용 없는 게시글";
 }
 
-$sql = "INSERT INTO team_board (title, post, author, reg_date) VALUES ('$title', '$post_content', '$author', NOW())";
+// $sql = "INSERT INTO team_board (title, post, author, reg_date) VALUES ('$title', '$post_content', '$author', NOW())";
+$sql = "INSERT INTO team_board (title, post, file_name, author, reg_date) VALUES ('$title', '$post_content', '$file_name', '$author', NOW())";
 
 if (mysqli_query($conn, $sql)) {
     echo "<script>

@@ -89,6 +89,10 @@ app.post('/api/upload', authMiddleware, upload.single('file'), async (req, res) 
   });
 });
 
+
+// 첨부파일 파일 업로드 기능 수정중
+
+
 // 파일 목록 조회
 app.get('/api/files', async (req, res) => {
   const [rows] = await db.execute(
