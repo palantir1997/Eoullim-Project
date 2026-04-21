@@ -17,10 +17,33 @@ $conn = mysqli_connect($host, $user, $pass, $dbname);
 
 mysqli_set_charset($conn, "utf8mb4");
 
-$sql = "SELECT * FROM team_board ORDER BY idx DESC";
-$result = mysqli_query($conn, $sql);
+// $sql = "SELECT * FROM team_board ORDER BY idx DESC";
+// $result = mysqli_query($conn, $sql);
 
 $userId = $_SESSION['userid'];
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+if ($search !== '') {
+    $stmt = $conn->prepare("
+        SELECT * FROM team_board 
+        WHERE title LIKE ? 
+           OR post LIKE ? 
+           OR author LIKE ?
+        ORDER BY idx DESC
+    ");
+
+    $like = "%{$search}%";
+    $stmt->bind_param("sss", $like, $like, $like);
+
+} else {
+    $stmt = $conn->prepare("
+        SELECT * FROM team_board 
+        ORDER BY idx DESC
+    ");
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -77,10 +100,10 @@ $userId = $_SESSION['userid'];
 
     <div class="content-wrapper">
         <nav class="navbar topbar mb-4 px-4 py-3 d-flex justify-content-between align-items-center">
-            <form class="d-none d-sm-inline-block form-inline mr-auto" style="width: 350px;">
+            <form method="GET" class="d-none d-sm-inline-block form-inline mr-auto" style="width: 350px;">
                 <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
-                    <button class="btn btn-primary" type="button"><i class="fas fa-search fa-sm"></i></button>
+                    <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for...">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search fa-sm"></i></button>
                 </div>
             </form>
             <ul class="navbar-nav align-items-center flex-row mb-0">
