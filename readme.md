@@ -139,7 +139,7 @@ Region_C (Web & Visualization)
 
 ---
 
-### VLAN & 접근 제어
+### 네트워크 설계 & 접근 제어
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/a900aaf6-117c-4054-834a-b1b06a06f361" width="100%">
