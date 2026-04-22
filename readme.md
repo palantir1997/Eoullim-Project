@@ -294,16 +294,6 @@ sudo firewall-cmd --reload
 
 ---
 
-## 📚 참고 자료
-
-- [Cisco Packet Tracer](https://www.netacad.com/courses/packet-tracer) - 네트워크 시뮬레이션
-- [Rocky Linux 9.7](https://rockylinux.org/) - 보안 강화형 리눅스
-- [Grafana + Loki](https://grafana.com/oss/loki/) - 실시간 로그 분석
-- [Fail2Ban](https://www.fail2ban.org/) - 자동 차단 시스템
-- [Tailscale](https://tailscale.com/) - VPN 보안 터널
-
----
-
 ## 📄 라이선스
 
 이 프로젝트는 **교육 목적**으로 개발되었습니다.
