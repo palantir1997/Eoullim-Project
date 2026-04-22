@@ -1,8 +1,7 @@
 # 🛡️ Aulim Security - 웹 서비스 기업 대상 통합 보안 솔루션
 
 ## 📺 시연 영상
-[![Aulim Security 시연](https://img.youtube.com/vi/quweHTW2XGM/0.jpg)]
-
+[![Aulim Security 시연](https://img.youtube.com/vi/quweHTW2XGM/0.jpg)](https://www.youtube.com/watch?v=quweHTW2XGM)
 ---
 
 <p align="center">
