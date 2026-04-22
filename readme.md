@@ -358,35 +358,6 @@ ls -la /mnt/logs/
 
 ---
 
-## 접속 정보
-
-### 데이터베이스 마스터
-```
-주소: [SERVER_ADDRESS]
-포트: 3306
-DB명: eoulrim_db
-```
-
-### 로그 수집 서버
-```
-주소: [LOG_SERVER_ADDRESS]
-포트: 514 / UDP (Rsyslog)
-```
-
-### Grafana 대시보드
-```
-URL: http://[GRAFANA_ADDRESS]:3000
-기본 계정: admin / admin
-```
-
-### Loki API
-```
-URL: http://[LOKI_ADDRESS]:3100
-Query: {job="fail2ban"} |= "Ban"
-```
-
----
-
 ## 팀 구성
 
 | 역할 | 담당 영역 |
