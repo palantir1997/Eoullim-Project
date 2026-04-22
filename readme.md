@@ -1,12 +1,13 @@
 # 🛡️ Aulim Security - 웹 서비스 기업 대상 통합 보안 솔루션
 
 ## 📺 시연 영상
-[![Aulim Security 시연](https://img.youtube.com/vi/quweHTW2XGM/0.jpg)](https://www.youtube.com/watch?v=quweHTW2XGM)
+[![Aulim Security 시연](https://img.youtube.com/vi/quweHTW2XGM/0.jpg)]
 
 ---
 
 <p align="center">
   <img width="1904" height="929" alt="Image" src="https://github.com/user-attachments/assets/987787ac-310f-435e-ae57-83885f33cdf3" />
+  <img width="1770" height="808" alt="Image" src="https://github.com/user-attachments/assets/fd2e65e3-f18a-4fd6-9266-2d16174811e2" />
 </p>
 
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다. <br>
