@@ -137,7 +137,14 @@ Region_C (Web & Visualization)
 
 > 모든 Region에서 **Firewall Enabled (Port Restricted)** / **SELinux: Enforcing Mode** 적용
 
+---
+
 ### VLAN & 접근 제어
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a900aaf6-117c-4054-834a-b1b06a06f361" width="100%">
+   <img src="https://github.com/user-attachments/assets/1e84c1be-466d-4c3c-9e18-7c470a94c72f" width="100%">
+</p>
 
 | 구분 | 인터넷 접근 | 내부망 접근 | VLAN |
 |------|----------|----------|------|
@@ -184,32 +191,12 @@ Region_C (Web & Visualization)
 
 ## 📊 로그 흐름도
 
-```
-Fail2Ban 로그 발생
-        |
-        v
-rsyslog (로컬)
-        |
-        v
-파일 저장 (/var/log/fail2ban.log)
-        |
-        v
-NFS를 통해 중앙 서버로 전송
-        |
-        v
-Promtail이 로그 감지
-        |
-        v
-Loki 스토리지에 저장
-        |
-        v
-Grafana 대시보드에 실시간 표시
-        |
-        v
-MariaDB에 구조화된 데이터 저장
-```
+### 서버 구성도
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6b539b2d-c31d-466e-9dd5-7d20f438f137" width="100%">
+</p>
 
-> ※ rsyslog → MariaDB 저장 경로는 설계 완료, 향후 구현 예정
+> ※ rsyslog → MariaDB 저장 경로는 설계 완료, 사용하지 않고 있음.
 
 ---
 
