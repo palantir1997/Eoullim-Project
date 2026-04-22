@@ -6,7 +6,7 @@
 ---
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/3cfb1e38-3bf7-4d41-a026-ee8e4ddc4c01" width="100%">
+  <img width="1904" height="929" alt="Image" src="https://github.com/user-attachments/assets/987787ac-310f-435e-ae57-83885f33cdf3" />
 </p>
 
 웹 서비스 환경의 보안 위협에 대응할 수 있는 통합 보안 관제 시스템입니다. <br>
@@ -191,7 +191,7 @@ Region_C (Web & Visualization)
 
 ## 📊 로그 흐름도
 
-### 서버 구성도
+### 로직 구성도
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6b539b2d-c31d-466e-9dd5-7d20f438f137" width="100%">
 </p>
@@ -236,6 +236,7 @@ sudo firewall-cmd --reload
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/64006963-874c-4541-acc0-efc64becd5b2" width="100%" title="Web Application Flow" alt="Web Application Flow">
+  <img src="https://github.com/user-attachments/assets/c470fa2b-6bf3-40b1-b841-144640e7e368" width="100%">
 </p>
 
 ### 주요 PHP 모듈
@@ -296,4 +297,3 @@ sudo firewall-cmd --reload
 마지막 업데이트: 2026.04.22 <br>
 프로젝트 상태: ✅ 완료 <br>
 작성자: palantir1997
-```
