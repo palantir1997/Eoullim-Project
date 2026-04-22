@@ -1,5 +1,10 @@
 # Aulim Security - 웹 서비스 기업 대상 통합 보안 솔루션
 
+## 📺 시연 영상
+[▶ YouTube에서 보기](https://www.youtube.com/watch?v=quweHTW2XGM)
+
+---
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/3cfb1e38-3bf7-4d41-a026-ee8e4ddc4c01" width="100%">
 </p>
@@ -344,17 +349,6 @@ mysql> INSERT INTO fail2ban_logs VALUES (...);
 # 중앙 서버에서 NFS 마운트로 즉시 동기화 확인
 ls -la /mnt/logs/
 ```
-
----
-
-## Out-of-Scope (범위 외)
-
-- 실제 상용 클라우드(AWS, Azure 등) 인프라 연동
-- 대규모 트래픽 처리 및 부하 성능 테스트
-- 실제 결제 시스템 및 외부 상용 API 연동
-- 상용 보안 장비(IPS, WAF 등) 도입
-- AI(인공지능) 기반 이상 탐지 시스템
-- 모바일 앱 버전 개발
 
 ---
 
