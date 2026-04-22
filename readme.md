@@ -187,6 +187,24 @@ Region_C (Web & Visualization)
 - Fail2Ban을 활용한 공격 자동 탐지 및 차단
 - 로그 기반 침해 대응 프로세스 설계 및 검증
 
+<p align="center">
+  <img width="1749" height="963" alt="Image" src="https://github.com/user-attachments/assets/10b24c31-bace-4af9-9b3c-bd1b2c58b68a" />
+  <img width="1740" height="968" alt="Image" src="https://github.com/user-attachments/assets/7a064d2b-bc43-4fc4-b257-d8a73726f762" />
+  <img width="1736" height="945" alt="Image" src="https://github.com/user-attachments/assets/baa34400-1a40-4fb8-824e-c1d3c70c06e5" />
+  <img width="1731" height="954" alt="Image" src="https://github.com/user-attachments/assets/67bc2d0a-11af-45f0-8590-419d6f7b79e9" />
+  <img width="1745" height="961" alt="Image" src="https://github.com/user-attachments/assets/0fe9cf80-7560-4f74-8371-c5c0362f2ff9" />
+  <img width="1739" height="965" alt="Image" src="https://github.com/user-attachments/assets/c762e632-6263-4cd4-844b-ff44ef6c8154" />
+  <img width="1743" height="964" alt="Image" src="https://github.com/user-attachments/assets/7acbc710-c02c-4eb4-b6e9-787a4673d383" />
+  <img width="1730" height="959" alt="Image" src="https://github.com/user-attachments/assets/f52e9a50-15b5-48fa-94ef-16773f57d9bd" />
+  <img width="1737" height="963" alt="Image" src="https://github.com/user-attachments/assets/e311588f-e184-466d-ae4e-086c58a78f97" />
+  <img width="1747" height="959" alt="Image" src="https://github.com/user-attachments/assets/9f4d1214-ce6d-461d-bda6-44aaa04eb656" />
+  <img width="1741" height="958" alt="Image" src="https://github.com/user-attachments/assets/c8161a6f-b0db-41f9-9d8d-4d8bff146458" />
+  <img width="1745" height="963" alt="Image" src="https://github.com/user-attachments/assets/beb94c46-0732-45e7-909b-714311760de0" />
+  <img width="1735" height="969" alt="Image" src="https://github.com/user-attachments/assets/2d050bc8-c5a5-4b40-b271-fbb61d583b67" />
+  <img width="1740" height="964" alt="Image" src="https://github.com/user-attachments/assets/94392a18-4f31-4cfc-abcb-35425802ad55" />
+  <img width="1744" height="969" alt="Image" src="https://github.com/user-attachments/assets/19ec7d48-95b1-4c41-a1ec-06c033ea4b3b" />
+</p>
+
 ---
 
 ## 📊 로그 흐름도
