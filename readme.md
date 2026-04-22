@@ -245,6 +245,28 @@ sudo firewall-cmd --reload
 | web_access_monitor.php | 웹 접근 모니터링 |
 | fetch_logs.php | Loki에서 로그 조회 |
 | communication.php | API 통신 모듈 |
+| `register_form.php` | 신규 회원가입 폼 UI (부트스트랩 기반 폼 검증 및 직관적인 사용자 입력 인터페이스 설계) |
+| `register.php` | 회원가입 데이터 DB 안전 저장 (비밀번호 단방향 암호화 처리 및 SQL 인젝션 원천 차단 적용) |
+| `index.php` | 관리자 메인 대시보드 (보안 관제 현황 요약 UI 및 비인가 사용자 접근을 차단하는 세션 라우팅) |
+| `login_check.php` | 사용자 인증 검증 및 세션 생성 (SQL 인젝션 방어 적용) |
+| `logout.php` | 세션 종료 및 실시간 접속 상태 해제 처리 |
+| `board.php` | 게시판 목록 UI (20개 단위 페이징, 검색 기능, 최신순 정렬 적용) |
+| `view.php` | 게시글 상세 열람, 첨부파일 다운로드 및 댓글 UI |
+| `write_process.php` | 새 글 작성 로직 (**화이트리스트 기반 악성 파일 차단 적용**) |
+| `edit.php` | 게시글 수정 폼 (utf8mb4 인코딩 최적화 적용) |
+| `edit_process.php` | 게시글 수정 데이터 DB 업데이트 처리 |
+| `delete_process.php` | 게시글 삭제 및 **서버 내 물리적 파일(`unlink`) 동시 삭제** 로직 |
+| `upload_process.php` | 게시판 내 공통 파일 업로드 처리 모듈 |
+| `comment_process.php` | 댓글 작성 및 데이터 DB 저장 로직 |
+| `comment_delete.php` | 댓글 삭제 로직 (작성자 및 원글 작성자 교차 권한 검증 적용) |
+| `comment_like.php` | 댓글 좋아요 상태 업데이트 처리 |
+| `chat_handler.php` | 실시간 채팅 메시지 송수신 및 DB 저장 처리 |
+| `security_logs.php` | 통합 보안 로그 조회 페이지 UI (Fail2Ban 등 연동) |
+| `web_access_monitor.php` | 실시간 웹 접근 및 공격 시도 모니터링 UI |
+| `fetch_logs.php` | 중앙 로그 서버(Loki)에서 보안 로그 조회 모듈 |
+| `communication.php` | 팀 커뮤니케이션(채팅) 메인 UI 및 API 통신 모듈 |
+| `heartbeat.php` | 접속 중인 팀원들의 실시간 상태(Online/Offline) 추적 |
+| `style.css` | 부트스트랩 프레임워크 커스텀 및 다크모드 세부 디자인 |
 
 ---
 ## 보안 테스트 및 에러 핸들링 결과
