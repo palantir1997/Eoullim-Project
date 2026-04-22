@@ -307,7 +307,7 @@ sudo firewall-cmd --reload
 
 ## 👥 팀 구성
 
-| GitHub | 이름 | 담당 영역 |
+| GitHub | 담당 영역 | 
 |--------|------|-----------|
 | palantir1997(팀장) | 서버 아키텍처 설계, VPN, Grafana/Loki 모니터링, 문서화(PPT/GitHub), 에러 핸들링 |
 | Jeongjaew0n1 | 백엔드, DB 관리, DNS 구축, Master-Slave 복제, 에러 핸들링 |
