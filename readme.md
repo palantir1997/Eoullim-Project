@@ -262,6 +262,7 @@ sudo firewall-cmd --reload
   <img width="1739" height="965" alt="Image" src="https://github.com/user-attachments/assets/c762e632-6263-4cd4-844b-ff44ef6c8154" />
   <img width="1743" height="964" alt="Image" src="https://github.com/user-attachments/assets/7acbc710-c02c-4eb4-b6e9-787a4673d383" />
   <img width="1730" height="959" alt="Image" src="https://github.com/user-attachments/assets/f52e9a50-15b5-48fa-94ef-16773f57d9bd" />
+  <img width="1738" height="955" alt="Image" src="https://github.com/user-attachments/assets/acc6ad71-dc1c-4bc2-a1e6-dd9cf531876f" />
   <img width="1737" height="963" alt="Image" src="https://github.com/user-attachments/assets/e311588f-e184-466d-ae4e-086c58a78f97" />
   <img width="1747" height="959" alt="Image" src="https://github.com/user-attachments/assets/9f4d1214-ce6d-461d-bda6-44aaa04eb656" />
   <img width="1741" height="958" alt="Image" src="https://github.com/user-attachments/assets/c8161a6f-b0db-41f9-9d8d-4d8bff146458" />
