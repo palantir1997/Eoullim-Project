@@ -139,17 +139,12 @@ Region_C (Web & Visualization)
 
 ---
 
-### 네트워크 설계 & 접근 제어
+### 네트워크 설계
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/a900aaf6-117c-4054-834a-b1b06a06f361" width="100%">
    <img src="https://github.com/user-attachments/assets/1e84c1be-466d-4c3c-9e18-7c470a94c72f" width="100%">
 </p>
-
-| 구분 | 인터넷 접근 | 내부망 접근 | VLAN |
-|------|----------|----------|------|
-| 개발팀 | 차단 | NFS 스토리지 외 접근 불가 | VLAN30 (DEV) |
-| 관제팀 | 허용 (업데이트/외부망) | 모든 서버군 SSH 접근 허용 | VLAN20 (NOC) |
 
 ---
 
