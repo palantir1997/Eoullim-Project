@@ -267,7 +267,6 @@ sudo firewall-cmd --reload
   <img width="1744" height="969" alt="Image" src="https://github.com/user-attachments/assets/19ec7d48-95b1-4c41-a1ec-06c033ea4b3b" />
 </p>
 
----
 
 ## 📅 프로젝트 일정 (WBS)
 
